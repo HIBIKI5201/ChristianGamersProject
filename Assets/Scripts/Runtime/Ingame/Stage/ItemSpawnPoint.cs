@@ -3,6 +3,10 @@ using System;
 using System.Linq;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace ChristianGamers
 {
     public class ItemSpawnPoint : MonoBehaviour
@@ -54,10 +58,39 @@ namespace ChristianGamers
             return default;
         }
 
-        /// <summary>
-        ///     スポーンアイテムの構造体
-        /// </summary>
-        [Serializable]
+#if UNITY_EDITOR
+        [Header("Debug")]
+        [SerializeField]
+        private float _switchingTime = 0.5f;
+
+        private void OnDrawGizmos()
+        {
+            if (_spawnItems == null || _spawnItems.Length == 0) return;
+
+            // エディタ上でのデバッグ用に、一定時間ごとにスポーンアイテムを切り替える
+            int index = (int)(EditorApplication.timeSinceStartup / _switchingTime) % _spawnItems.Length;
+
+            ItemBase item = _spawnItems[index].item;
+            if (item == null) return;
+
+            Gizmos.color = Color.green;
+            foreach (MeshFilter mf in item.GetComponentsInChildren<MeshFilter>())
+            {
+                if (mf == null) continue;
+                Gizmos.DrawWireMesh(
+                    mf.sharedMesh,
+                    transform.position
+                    + mf.transform.localPosition
+                    + -item.SpawnPivot.localPosition,
+                    Quaternion.identity,
+                    mf.transform.localScale);
+            }
+        }
+#endif
+    /// <summary>
+    ///     スポーンアイテムの構造体
+    /// </summary>
+    [Serializable]
         private struct SpawnItem
         {
             public ItemBase item;
