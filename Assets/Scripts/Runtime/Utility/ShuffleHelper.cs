@@ -1,3 +1,5 @@
+using System;
+
 namespace ChristianGamers.Utility
 {
     /// <summary>
@@ -12,7 +14,7 @@ namespace ChristianGamers.Utility
         /// <param name="array"></param>
         public static void FisherYatesShuffle<T>(T[] array)
         {
-            System.Random rng = new System.Random(); // System.Randomを使用
+            Random rng = new Random(); // System.Randomを使用
             int n = array.Length;
             for (int i = n - 1; i > 0; i--)
             {
