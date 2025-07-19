@@ -1,4 +1,3 @@
-using ChristianGamers.Ingame.Item;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +5,7 @@ using UnityEngine;
 namespace ChristianGamers.Ingame.Item
 {
     /// <summary>
-    /// インベントリシステム
+    ///     インベントリシステム
     /// </summary>
     public class InventoryManager : MonoBehaviour
     {
@@ -14,7 +13,7 @@ namespace ChristianGamers.Ingame.Item
         private int _itemIndex = 0;
 
         /// <summary>
-        /// インベントリのリストにアイテムを追加する
+        ///     インベントリのリストにアイテムを追加する
         /// </summary>
         /// <param name="item"取得したアイテム></param>
         public void AddItem(ItemBase item)
@@ -23,20 +22,32 @@ namespace ChristianGamers.Ingame.Item
         }
 
         /// <summary>
-        /// アイテムの選択
+        ///     インベントリのリストからアイテムを削除する
+        /// </summary>
+        /// <param name="item"></param>
+        public void RemoveItem(ItemBase item)
+        {
+            _items.Remove(item);
+        }
+
+        /// <summary>
+        ///     アイテムの選択
         /// </summary>
         public void SelectItem(float axis)
         {
             int value = Math.Sign(axis);
 
             if (axis == 0) return;
-            _itemIndex = (_itemIndex * 2 + value) % _items.Count;
+            _itemIndex = (_itemIndex + _items.Count + value) % _items.Count;
+
+            Debug.Log($"index : {_itemIndex}");
         }
 
         /// <summary>
         ///     選択されているアイテムを取得する
         /// </summary>
         /// <returns></returns>
-        public ItemBase GetSelectedItem() => _items[_itemIndex];
+        public ItemBase GetSelectedItem() =>
+            0 < _items.Count ? _items[_itemIndex] : null;
     }
 }
