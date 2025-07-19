@@ -10,6 +10,8 @@ namespace ChristianGamers.Ingame.Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
+        public bool IsInvincible => _isInvincible;
+
         public void SetInvincible(bool active) => _isInvincible = active;
 
         [SerializeField, Tooltip("移動速度")]
@@ -17,9 +19,16 @@ namespace ChristianGamers.Ingame.Player
         [SerializeField, Tooltip("Y回転速度")]
         private Vector2 _rotationSpeed = new Vector2(10, 10);
 
+        [SerializeField, Min(0), Tooltip("アイテムを収集する範囲")]
+        private float _collectRange = 2.0f;
+
+        [SerializeField, Range(0, 360), Tooltip("アイテムを収集するための角度の閾値（度数法）")]
+        private float _angleThreshold = 45.0f;
+
         private Rigidbody _rigidbody;
 
         private PlayerController _playerController;
+        private PlayerItemCollecter _playerItemCollecter;
 
         private Vector3 _moveDir;
         private Vector2 _lookDir;
@@ -35,26 +44,16 @@ namespace ChristianGamers.Ingame.Player
 
             if (_rigidbody != null)
             {
-                _playerController = new PlayerController(transform, _rigidbody);
+                _playerController = new(transform, _rigidbody);
             }
+
+            _playerItemCollecter = new(transform);
         }
 
         private void Start()
         {
             InputBuffer inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
-
-            if (inputBuffer != null)
-            {
-                inputBuffer.MoveAction.performed += HandleMove;
-                inputBuffer.MoveAction.canceled += HandleMove;
-
-                inputBuffer.LookAction.performed += HandleLook;
-                inputBuffer.LookAction.canceled += HandleLook;
-            }
-            else
-            {
-                Debug.LogWarning("InputBuffer not found in ServiceLocator.");
-            }
+            RegisterInputActionHandle(inputBuffer);
         }
 
         private void Update()
@@ -84,6 +83,30 @@ namespace ChristianGamers.Ingame.Player
         private void HandleLook(InputAction.CallbackContext context)
         {
             _lookDir = context.ReadValue<Vector2>().normalized;
+        }
+
+        private void HandleCollect(InputAction.CallbackContext context)
+        {
+            // アイテム収集の処理をここに実装
+            // 例えば、周囲のアイテムを検出し、収集するロジックを追加する
+            Debug.Log("Collect action triggered.");
+        }
+
+        private void RegisterInputActionHandle(InputBuffer inputBuffer)
+        {
+            if (inputBuffer == null)
+            {
+                Debug.LogError("InputBuffer is null.");
+                return;
+            }
+
+            inputBuffer.MoveAction.performed += HandleMove;
+            inputBuffer.MoveAction.canceled += HandleMove;
+
+            inputBuffer.LookAction.performed += HandleLook;
+            inputBuffer.LookAction.canceled += HandleLook;
+
+            inputBuffer.CollectAction.started += HandleCollect;
         }
     }
 }
