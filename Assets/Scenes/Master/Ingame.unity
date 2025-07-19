@@ -717,6 +717,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4996684125676429715, guid: 40aba90d3869b6647815a11aed8990f6, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: d2a7ea89cdfa3844e908a243f63f0b04, type: 2}
     - target: {fileID: 6311435788052299451, guid: 40aba90d3869b6647815a11aed8990f6, type: 3}
       propertyPath: m_Name
       value: Stage
