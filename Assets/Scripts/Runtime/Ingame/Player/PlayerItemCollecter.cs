@@ -16,13 +16,13 @@ namespace ChristianGamers.Ingame.Player
         }
 
         /// <summary>
-        ///     範囲内のアイテムを取得する
+        ///     範囲内の最も取りやすいアイテムを取得する
         /// </summary>
-        /// <param name="selfPos"></param>
         /// <param name="range">回収半径</param>
         /// <param name="angleThreshold">回収範囲（度数）</param>
+        /// <param name="offset">オフセット</param>
         /// <returns></returns>
-        public ItemBase GetItem(float range, float angleThreshold, Vector3 offset = new())
+        public ItemBase SearchItem(float range, float angleThreshold, Vector3 offset = new())
         {
             Vector3 position = _self.position + offset;
 

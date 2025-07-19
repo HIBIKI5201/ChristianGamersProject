@@ -129,7 +129,7 @@ namespace ChristianGamers.Ingame.Player
             // 例えば、周囲のアイテムを検出し、収集するロジックを追加する
             Debug.Log("Collect action triggered.");
 
-            ItemBase item = _playerItemCollecter.GetItem(_collectRange, _angleThreshold, _collectOffset);
+            ItemBase item = _playerItemCollecter.SearchItem(_collectRange, _angleThreshold, _collectOffset);
 
             if (item == null) return;
 
