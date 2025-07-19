@@ -9,9 +9,9 @@ namespace ChristianGamers.Ingame.Stage
     /// </summary>
     public class InterferenceObject : MonoBehaviour
     {
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            if (collision.gameObject.TryGetComponent<PlayerManager>(out PlayerManager player))
+            if (other.gameObject.TryGetComponent<PlayerManager>(out PlayerManager player))
             {
                 if (player.IsInvincible)
                 {
