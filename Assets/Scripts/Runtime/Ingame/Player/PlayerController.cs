@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace ChristianGamers.Ingame.Player
 {
+    /// <summary>
+    ///     プレイヤーの移動と回転を制御するクラス。
+    /// </summary>
     [Serializable]
     public class PlayerController
     {
-        private Transform _self;
-        private Rigidbody _rigidbody;
-
         public PlayerController(Transform self, Rigidbody rigidbody)
         {
             _self = self;
@@ -42,5 +42,8 @@ namespace ChristianGamers.Ingame.Player
             float turnAmount = dir.x * rotationSpeed * Time.deltaTime;
             _self.Rotate(0f, turnAmount, 0f);
         }
+
+        private Transform _self;
+        private Rigidbody _rigidbody;
     }
 }

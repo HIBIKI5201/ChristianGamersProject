@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 namespace ChristianGamers.Ingame.Player
 {
+    /// <summary>
+    ///     プレイヤーの管理を行うクラス。
+    /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
