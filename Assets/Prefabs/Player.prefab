@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7b60ef40d622840bd2654866475353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 50
+  _moveSpeed: 10
   _rotationSpeed: {x: 300, y: 100}
   _collectRange: 3
   _angleThreshold: 45
