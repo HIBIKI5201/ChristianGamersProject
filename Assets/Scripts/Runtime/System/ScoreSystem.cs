@@ -19,6 +19,9 @@ namespace ChristianGamers.Ingame.System
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
                 Debug.Log("[ScoreSystem] インスタンス生成＆永続化");
+                
+                List<int> scores = LoadScores();
+                SaveScores(scores);
             }
             else
             {
@@ -27,22 +30,19 @@ namespace ChristianGamers.Ingame.System
                 return;
             }
             
-            List<int> scores = LoadScores();
-            SaveScores(scores);
-            
-            if (_isCountUp)
+            void Start()
             {
-                AddScore(2);
-                Debug.Log("Score +2");
+                if (_isCountUp)
+                {
+                    AddScore(2);
+                    Debug.Log("Score +2");
+                }
+                else
+                {
+                    Debug.Log("Score +1");
+                }
+                _isCountUp = true;
             }
-            else
-            {
-                AddScore(1);
-                Debug.Log("Score +1");
-            }
-            _isCountUp = true;
-            
-            
         }
         
         public void AddScore(int amount)
