@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Item
@@ -7,6 +8,7 @@ namespace ChristianGamers.Ingame.Item
     /// </summary>
     public class ItemBase : MonoBehaviour
     {
+        public event Action OnHadGet;
         /// <summary>
         /// アイテムを取得したことを伝えられる
         /// </summary>
@@ -15,6 +17,7 @@ namespace ChristianGamers.Ingame.Item
             //プレイヤーの見えない場所に飛ばす
             this.transform.position = Vector3.one * 10000;
             inventory.AddItem(this);
+            OnHadGet?.Invoke(); // アイテムを取得したイベントを呼び出す
         }
     }
 }

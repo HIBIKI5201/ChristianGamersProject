@@ -1,5 +1,6 @@
 using ChristianGamers.Ingame.Player;
 using ChristianGamers.Utility;
+using System;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Stage
@@ -10,6 +11,7 @@ namespace ChristianGamers.Ingame.Stage
     [RequireComponent(typeof(Rigidbody))]
     public class WithdrawalPoint : MonoBehaviour
     {
+        public event Action OnPlayerWithdrawal; // プレイヤーが回収ポイントに入ったときのイベント
         private void Awake()
         {
             if (TryGetComponent(out Rigidbody rb))

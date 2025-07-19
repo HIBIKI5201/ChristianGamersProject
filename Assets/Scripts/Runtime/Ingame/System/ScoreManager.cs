@@ -9,7 +9,8 @@ namespace ChristianGamers.System.Score
     /// </summary>
     public class ScoreManager : MonoBehaviour
     {
-        public event Action<int> OnScoreChanged;
+        [Tooltip("スコア変化時のイベント。第一引数が合計値、第二引数が変化量")]
+        public event Action<int, int> OnScoreChanged;
 
         private int _score = 0;
 
@@ -22,7 +23,7 @@ namespace ChristianGamers.System.Score
             _score += amount;
             Debug.Log($"[ScoreManager] スコア加算: +{amount}（現在のスコア: {_score}）");
 
-            OnScoreChanged?.Invoke(_score);
+            OnScoreChanged?.Invoke(_score, amount);
         }
 
         /// <summary>
