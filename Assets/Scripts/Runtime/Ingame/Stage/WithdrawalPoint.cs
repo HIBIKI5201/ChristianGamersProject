@@ -7,8 +7,17 @@ namespace ChristianGamers.Ingame.Stage
     /// <summary>
     ///     アイテムの回収ポイント
     /// </summary>
+    [RequireComponent(typeof(Rigidbody))]
     public class WithdrawalPoint : MonoBehaviour
     {
+        private void Awake()
+        {
+            if (TryGetComponent(out Rigidbody rb))
+            {
+                rb.isKinematic = true; // Rigidbodyをキネマティックに設定
+            }
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             PlayerManager player = TransformUtility.FindTypeByParents<PlayerManager>(other.transform);
