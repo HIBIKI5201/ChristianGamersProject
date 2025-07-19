@@ -12,6 +12,8 @@ namespace ChristianGamers.Ingame.Player
     public class PlayerManager : MonoBehaviour
     {
         public bool IsInvincible => _isInvincible;
+
+        public float ThrowPower => _throwPower;
         public Transform MuzzlePivot => _muzzlePivot;
 
         public void SetInvincible(bool active) => _isInvincible = active;
@@ -31,6 +33,8 @@ namespace ChristianGamers.Ingame.Player
 
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
+        [SerializeField, Tooltip("投げる力の大きさ")]
+        private float _throwPower = 10.0f;
 
         private Rigidbody _rigidbody;
 
