@@ -1,7 +1,9 @@
 using ChristianGamers.Ingame.Item;
+using ChristianGamers.System.Score;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +12,7 @@ namespace ChristianGamers.Ingame.Player
     /// <summary>
     ///     プレイヤーの管理を行うクラス。
     /// </summary>
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody), typeof(InventoryManager))]
     public class PlayerManager : MonoBehaviour
     {
         public bool IsInvincible => _isInvincible;
@@ -53,6 +55,32 @@ namespace ChristianGamers.Ingame.Player
 
         public void RegisterSpeedBuff(Func<float, float> func) => _playerController.RegisterSpeedBuff(func);
         public void UnregisterSpeedBuff(Func<float, float> func) => _playerController.UnregisterSpeedBuff(func);
+
+        public void Withdrawal()
+        {
+            ScoreManager scoreManager = ServiceLocator.GetInstance<ScoreManager>();
+
+            if (scoreManager == null)
+            {
+                Debug.LogWarning("ScoreManager is not found in the ServiceLocator.");
+                return;
+            }
+
+            // 取得したアイテムのスコアを計算し、スコアマネージャーに追加する
+            IWithdrawable[] withdrawables = _inventoryManager.GetWithdrawalItems();
+            int sumScore = withdrawables.Sum(e => e.WithdrawScore);
+
+            scoreManager.AddScore(sumScore);
+
+            // 取得したアイテムをインベントリから削除する
+            foreach (IWithdrawable withdrawable in withdrawables)
+            {
+                if (withdrawable is ItemBase item)
+                {
+                    _inventoryManager.RemoveItem(item);
+                }
+            }
+        }
 
         [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
