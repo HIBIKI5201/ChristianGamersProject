@@ -23,10 +23,10 @@ namespace ChristianGamers.Ingame.Player
         /// <param name="speed"></param>
         public void Move(Vector3 dir, Vector3 forward, float speed)
         {
-            // forward（前）と right（右）を計算
+            // 前から右を計算
             Vector3 right = Vector3.Cross(Vector3.up, forward).normalized;
 
-            // dir をローカル座標系（right/forward）に変換
+            // dir をローカル系からワールド系に変換
             Vector3 moveDir = (right * dir.x + forward.normalized * dir.z).normalized;
 
             _rigidbody.AddForce(moveDir * speed, ForceMode.Force);
