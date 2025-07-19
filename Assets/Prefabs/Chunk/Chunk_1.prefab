@@ -160,6 +160,8 @@ MonoBehaviour:
     spawnWeight: 3
   - item: {fileID: 0}
     spawnWeight: 1
+  _switchingTime: 1
+  _stopSwitching: 1
 --- !u!1001 &8800921130314892273
 PrefabInstance:
   m_ObjectHideFlags: 0
