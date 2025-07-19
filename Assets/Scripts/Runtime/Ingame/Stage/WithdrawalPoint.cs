@@ -1,19 +1,22 @@
+using ChristianGamers.Ingame.Player;
+using ChristianGamers.Utility;
 using UnityEngine;
 
-namespace ChristianGamers
+namespace ChristianGamers.Ingame.Stage
 {
+    /// <summary>
+    ///     アイテムの回収ポイント
+    /// </summary>
     public class WithdrawalPoint : MonoBehaviour
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void OnTriggerEnter(Collider other)
         {
-        
-        }
+            PlayerManager player = TransformUtility.FindTypeByParents<PlayerManager>(other.transform);
 
-        // Update is called once per frame
-        void Update()
-        {
-        
+            if (player != null)
+            {
+                Debug.Log("Player has entered the withdrawal point.");
+            }
         }
     }
 }
