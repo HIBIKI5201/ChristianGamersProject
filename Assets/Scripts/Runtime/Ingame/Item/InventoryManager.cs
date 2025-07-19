@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Item
@@ -70,5 +71,12 @@ namespace ChristianGamers.Ingame.Item
         /// <returns></returns>
         public ItemBase GetSelectedItem() =>
             0 < _items.Count ? _items[_itemIndex] : null;
+
+        public IWithdrawable[] GetWithdrawalItems()
+        {
+            if (_items.Count == 0) return null;
+
+            return _items.Select(item => item as IWithdrawable).ToArray();
+        }
     }
 }
