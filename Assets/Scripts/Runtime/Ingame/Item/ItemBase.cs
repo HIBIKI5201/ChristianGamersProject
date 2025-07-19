@@ -7,7 +7,7 @@ namespace ChristianGamers.Ingame.Item
     /// </summary>
     public class ItemBase : MonoBehaviour
     {
-        public Transform SpawnPivot => _spawnPivot ?? transform;
+        public Transform SpawnPivot => (_spawnPivot != null) ? _spawnPivot : transform;
 
         [SerializeField]
         private Transform _spawnPivot;
