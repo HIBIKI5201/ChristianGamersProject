@@ -1,3 +1,4 @@
+using ChristianGamers.Ingame.Item;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,23 +13,46 @@ namespace ChristianGamers.Ingame.Player
     {
         public bool IsInvincible => _isInvincible;
 
+        public float ThrowPower => _throwPower;
+        public Transform MuzzlePivot => _muzzlePivot;
+
+        /// <summary>
+        ///     無敵状態を設定
+        /// </summary>
+        /// <param name="active"></param>
         public void SetInvincible(bool active) => _isInvincible = active;
 
+        /// <summary>
+        ///     ノックバックする
+        /// </summary>
+        public void NockBack()
+        {
+            Debug.Log("NockBack");
+        }
+
+        [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
         private float _moveSpeed = 10;
         [SerializeField, Tooltip("Y回転速度")]
         private Vector2 _rotationSpeed = new Vector2(10, 10);
 
+        [Header("アイテム収集系設定")]
         [SerializeField, Min(0), Tooltip("アイテムを収集する範囲")]
         private float _collectRange = 2.0f;
 
         [SerializeField, Range(0, 360), Tooltip("アイテムを収集するための角度の閾値（度数法）")]
         private float _angleThreshold = 45.0f;
 
+        [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
+        private Transform _muzzlePivot;
+        [SerializeField, Tooltip("投げる力の大きさ")]
+        private float _throwPower = 10.0f;
+
         private Rigidbody _rigidbody;
 
         private PlayerController _playerController;
         private PlayerItemCollecter _playerItemCollecter;
+        private InventoryManager _inventoryManager;
 
         private Vector3 _moveDir;
         private Vector2 _lookDir;
@@ -42,6 +66,11 @@ namespace ChristianGamers.Ingame.Player
                 Debug.LogError("Rigidbody component is required on this GameObject.");
             }
 
+            if (!TryGetComponent(out _inventoryManager))
+            {
+                Debug.LogError("InventoryManager component is required on this GameObject.");
+            }
+
             if (_rigidbody != null)
             {
                 _playerController = new(transform, _rigidbody);
@@ -53,6 +82,11 @@ namespace ChristianGamers.Ingame.Player
         private void Start()
         {
             InputBuffer inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
+            if (inputBuffer == null)
+            {
+                Debug.LogError("InputBuffer is not found in the ServiceLocator.");
+                return;
+            }
             RegisterInputActionHandle(inputBuffer);
         }
 
@@ -90,8 +124,19 @@ namespace ChristianGamers.Ingame.Player
             // アイテム収集の処理をここに実装
             // 例えば、周囲のアイテムを検出し、収集するロジックを追加する
             Debug.Log("Collect action triggered.");
+
+            ItemBase item = _playerItemCollecter.GetItem(_collectRange, _angleThreshold);
+
+            if (item == null) return;
+
+            item.HadGet(_inventoryManager);
+
         }
 
+        /// <summary>
+        ///     入力アクションのハンドルを登録する。
+        /// </summary>
+        /// <param name="inputBuffer"></param>
         private void RegisterInputActionHandle(InputBuffer inputBuffer)
         {
             if (inputBuffer == null)

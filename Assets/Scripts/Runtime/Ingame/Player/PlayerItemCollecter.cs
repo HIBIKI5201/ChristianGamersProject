@@ -22,12 +22,13 @@ namespace ChristianGamers.Ingame.Player
         /// <param name="range">回収半径</param>
         /// <param name="angleThreshold">回収範囲（度数）</param>
         /// <returns></returns>
-        public ItemBase[] GetItems(float range, float angleThreshold)
+        public ItemBase GetItem(float range, float angleThreshold)
         {
             //範囲内のオブジェクトを取得
             Collider[] hits = Physics.OverlapSphere(_self.position, range);
 
-            List<ItemBase> result = new List<ItemBase>();
+            ItemBase result = null;
+            float minAngle = float.MinValue;
             foreach (Collider hit in hits)
             {
                 //アイテム以外は無視
@@ -37,14 +38,15 @@ namespace ChristianGamers.Ingame.Player
                 Vector3 directionToItem = hit.transform.position - _self.position;
                 float angle = Vector3.Angle(_self.forward, directionToItem);
 
-                // 角度が閾値以下なら収集可能
-                if (angle <= angleThreshold)
+                // 角度が閾値以下かつアングルがより少ないものを収集対象にする
+                if (angle <= angleThreshold && minAngle < angle)
                 {
-                    result.Add(item);
+                    result = item;
+                    minAngle = angle;
                 }
             }
 
-            return result.ToArray();
+            return result;
         }
 
         private Transform _self;
