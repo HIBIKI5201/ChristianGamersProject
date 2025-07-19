@@ -1,5 +1,4 @@
 using SymphonyFrameWork.System;
-using Unity.AppUI.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +14,8 @@ namespace ChristianGamers.Ingame.Player
 
         private Rigidbody _rigidbody;
 
+        private PlayerController _playerController;
+
         private Vector3 _moveDir;
         private Vector2 _lookDir;
 
@@ -23,6 +24,11 @@ namespace ChristianGamers.Ingame.Player
             if (!TryGetComponent(out _rigidbody))
             {
                 Debug.LogError("Rigidbody component is required on this GameObject.");
+            }
+
+            if (_rigidbody != null)
+            {
+                _playerController = new PlayerController(transform, _rigidbody);
             }
         }
 
@@ -46,12 +52,12 @@ namespace ChristianGamers.Ingame.Player
 
         private void Update()
         {
-            RotateYaw(_lookDir, _rotationSpeed.x);
+            _playerController.RotateYaw(_lookDir, _rotationSpeed.x);
         }
 
         private void FixedUpdate()
         {
-            Move(_moveDir, transform.forward, _moveSpeed);
+            _playerController.Move(_moveDir, transform.forward, _moveSpeed);
         }
 
         /// <summary>
@@ -71,34 +77,6 @@ namespace ChristianGamers.Ingame.Player
         private void HandleLook(InputAction.CallbackContext context)
         {
             _lookDir = context.ReadValue<Vector2>().normalized;
-        }
-
-        /// <summary>
-        ///     入力の方向に応じてプレイヤーを移動させる。
-        /// </summary>
-        /// <param name="dir"></param>
-        /// <param name="forward"></param>
-        /// <param name="speed"></param>
-        private void Move(Vector3 dir, Vector3 forward, float speed)
-        {
-            // forward（前）と right（右）を計算
-            Vector3 right = Vector3.Cross(Vector3.up, forward).normalized;
-
-            // dir をローカル座標系（right/forward）に変換
-            Vector3 moveDir = (right * dir.x + forward.normalized * dir.z).normalized;
-
-            _rigidbody.AddForce(moveDir * speed, ForceMode.Force);
-        }
-
-        /// <summary>
-        ///     入力の方向に応じてプレイヤーをY軸回転させる。
-        /// </summary>
-        /// <param name="dir"></param>
-        /// <param name="rotationSpeed"></param>
-        private void RotateYaw(Vector2 dir, float rotationSpeed)
-        {
-            float turnAmount = dir.x * rotationSpeed * Time.deltaTime;
-            transform.Rotate(0f, turnAmount, 0f);
         }
     }
 }
