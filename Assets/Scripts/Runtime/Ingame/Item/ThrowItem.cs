@@ -8,18 +8,32 @@ namespace ChristianGamers.Ingame.Item
     /// <summary>
     /// 投擲アイテム
     /// </summary>
+    [RequireComponent(typeof(Rigidbody))]
     public class ThrowItem : ItemBase, IUseble
     {
-        private Rigidbody2D _rb;
-
         public void Use()
         {
             PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();
-            this.transform.position = player.MuzzlePivot.position;
+            if (player == null)
+            {
+                Debug.LogError("PlayerManagerが見つかりません。");
+                return;
+            }
+
+            Transform muzzle = player.MuzzlePivot;
+
+            // マズルピボットの位置にアイテムを配置
+            this.transform.position = muzzle.position;
             float throwForce = player.ThrowPower;
 
-            _rb = GetComponent<Rigidbody2D>();
-            _rb.AddForce(Vector3.forward * throwForce, (ForceMode2D)ForceMode.Impulse);
+            if (TryGetComponent(out Rigidbody rb))
+            {
+                rb.AddForce(muzzle.forward * throwForce, ForceMode.Impulse);
+            }
+            else
+            {
+                Debug.LogError("Rigidbodyがアタッチされていません。");
+            }
         }
     }
 }
