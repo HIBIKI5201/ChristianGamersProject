@@ -7,6 +7,9 @@ namespace ChristianGamers.Ingame.Stage
     /// </summary>
     public class ChunkEntity : MonoBehaviour
     {
-
+        public void Initialize()
+        {
+            Debug.Log($"chunk{gameObject.name} has been initialized.");
+        }
     }
 }
