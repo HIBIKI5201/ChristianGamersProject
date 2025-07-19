@@ -2,7 +2,7 @@ using ChristianGamers.Ingame.Item;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ChristianGamers
+namespace ChristianGamers.Ingame.Item
 {
     public class InventoryManager : MonoBehaviour
     {
