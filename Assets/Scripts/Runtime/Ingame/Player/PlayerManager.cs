@@ -10,12 +10,20 @@ namespace ChristianGamers.Ingame.Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
+        public bool IsInvincible => _isInvincible;
+
         public void SetInvincible(bool active) => _isInvincible = active;
 
         [SerializeField, Tooltip("移動速度")]
         private float _moveSpeed = 10;
         [SerializeField, Tooltip("Y回転速度")]
         private Vector2 _rotationSpeed = new Vector2(10, 10);
+
+        [SerializeField, Min(0), Tooltip("アイテムを収集する範囲")]
+        private float _collectRange = 2.0f;
+
+        [SerializeField, Range(0, 360), Tooltip("アイテムを収集するための角度の閾値（度数法）")]
+        private float _angleThreshold = 45.0f;
 
         private Rigidbody _rigidbody;
 
