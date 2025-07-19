@@ -70,6 +70,11 @@ namespace ChristianGamers.Ingame.Player
         private void Start()
         {
             InputBuffer inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
+            if (inputBuffer == null)
+            {
+                Debug.LogError("InputBuffer is not found in the ServiceLocator.");
+                return;
+            }
             RegisterInputActionHandle(inputBuffer);
         }
 
