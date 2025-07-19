@@ -33,8 +33,18 @@ namespace ChristianGamers.Ingame.Player
             float minAngle = float.MinValue;
             foreach (Collider hit in hits)
             {
-                //アイテム以外は無視
-                if (!hit.TryGetComponent(out ItemBase item)) continue;
+                //アイテムかどうかを確認
+                Transform hitTransform = hit.transform;
+                ItemBase item = null;
+                while (!hitTransform.TryGetComponent(out item))
+                {
+                    if (hitTransform.parent == null)
+                        break; // 親がいない場合は諦める
+
+                    hitTransform = hitTransform.parent; // 親をたどる
+                }
+
+                if (item == null) continue; // アイテムではない
 
                 // 角度を計算
                 Vector3 directionToItem = hit.transform.position - position;
