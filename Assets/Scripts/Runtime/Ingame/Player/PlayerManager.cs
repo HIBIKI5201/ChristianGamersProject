@@ -1,5 +1,6 @@
 using ChristianGamers.Ingame.Item;
 using SymphonyFrameWork.System;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -87,6 +88,8 @@ namespace ChristianGamers.Ingame.Player
                 Debug.LogError("InputBuffer is not found in the ServiceLocator.");
                 return;
             }
+
+            Cursor.lockState = CursorLockMode.Locked;
             RegisterInputActionHandle(inputBuffer);
         }
 
@@ -130,7 +133,21 @@ namespace ChristianGamers.Ingame.Player
             if (item == null) return;
 
             item.HadGet(_inventoryManager);
+        }
 
+        private void HandleUse(InputAction.CallbackContext context)
+        {
+            ItemBase item = _inventoryManager.GetSelectedItem();
+
+            if (item is IUseble usable) //Usableを継承していたら実行
+            {
+                _inventoryManager.UseSelectedItem();
+            }
+        }
+
+        private void HandleSelect(InputAction.CallbackContext context)
+        {
+            _inventoryManager.SelectItem(context.ReadValue<float>());
         }
 
         /// <summary>
@@ -152,6 +169,10 @@ namespace ChristianGamers.Ingame.Player
             inputBuffer.LookAction.canceled += HandleLook;
 
             inputBuffer.CollectAction.started += HandleCollect;
+
+            inputBuffer.UseAction.started += HandleUse;
+
+            inputBuffer.SelectAction.performed += HandleSelect;
         }
     }
 }
