@@ -43,6 +43,28 @@ namespace ChristianGamers.Ingame.Item
             Debug.Log($"index : {_itemIndex}");
         }
 
+        public void UseSelectedItem()
+        {
+            if (_items.Count == 0)
+            {
+                Debug.LogWarning("No items to use.");
+                return;
+            }
+            ItemBase selectedItem = GetSelectedItem();
+            if (selectedItem is IUseble usebleItem)
+            {
+                usebleItem.Use();
+                RemoveItem(selectedItem);
+
+                //アイテム総数が減っているのでインデックスを減らす
+                if (_itemIndex != 0) _itemIndex--; 
+            }
+            else
+            {
+                Debug.LogWarning("Selected item is not usable.");
+            }
+        }
+
         /// <summary>
         ///     選択されているアイテムを取得する
         /// </summary>
