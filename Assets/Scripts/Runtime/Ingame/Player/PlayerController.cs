@@ -36,7 +36,8 @@ namespace ChristianGamers.Ingame.Player
                 speed = buff(speed);
             }
 
-            _rigidbody.AddForce(moveDir * speed, ForceMode.Force);
+            _rigidbody.linearVelocity =
+                new Vector3(moveDir.x * speed, _rigidbody.linearVelocity.y, moveDir.z * speed);
         }
 
         /// <summary>
