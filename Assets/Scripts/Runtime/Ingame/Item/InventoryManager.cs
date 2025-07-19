@@ -4,9 +4,12 @@ using UnityEngine;
 
 namespace ChristianGamers.Ingame.Item
 {
+    /// <summary>
+    /// インベントリシステム
+    /// </summary>
     public class InventoryManager : MonoBehaviour
     {
-        private List<ItemBase> _items;
+        private List<ItemBase> _items = new List<ItemBase>();
 
         /// <summary>
         /// インベントリのリストにアイテムを追加する

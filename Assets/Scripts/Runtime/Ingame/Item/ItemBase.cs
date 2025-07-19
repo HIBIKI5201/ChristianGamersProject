@@ -2,9 +2,11 @@ using UnityEngine;
 
 namespace ChristianGamers.Ingame.Item
 {
+    /// <summary>
+    /// アイテムの基本機能
+    /// </summary>
     public class ItemBase : MonoBehaviour
     {
-        
         /// <summary>
         /// アイテムを取得したことを伝えられる
         /// </summary>
@@ -14,7 +16,5 @@ namespace ChristianGamers.Ingame.Item
             this.transform.position = Vector3.one * 10000;
             inventory.AddItem(this);
         }
-
-
     }
 }
