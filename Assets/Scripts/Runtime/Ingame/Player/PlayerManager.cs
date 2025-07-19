@@ -40,9 +40,10 @@ namespace ChristianGamers.Ingame.Player
         [Header("アイテム収集系設定")]
         [SerializeField, Min(0), Tooltip("アイテムを収集する範囲")]
         private float _collectRange = 2.0f;
-
         [SerializeField, Range(0, 360), Tooltip("アイテムを収集するための角度の閾値（度数法）")]
         private float _angleThreshold = 45.0f;
+        [SerializeField, Tooltip("アイテム収集範囲のオフセット")]
+        private Vector3 _collectOffset = new Vector3(0, 0.5f, 0);
 
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
@@ -128,7 +129,7 @@ namespace ChristianGamers.Ingame.Player
             // 例えば、周囲のアイテムを検出し、収集するロジックを追加する
             Debug.Log("Collect action triggered.");
 
-            ItemBase item = _playerItemCollecter.GetItem(_collectRange, _angleThreshold);
+            ItemBase item = _playerItemCollecter.GetItem(_collectRange, _angleThreshold, _collectOffset);
 
             if (item == null) return;
 
@@ -174,5 +175,12 @@ namespace ChristianGamers.Ingame.Player
 
             inputBuffer.SelectAction.performed += HandleSelect;
         }
+
+        #region
+        private void OnDrawGizmos()
+        {
+            PlayerItemCollecter.DrawGizmos(transform, _collectRange, _angleThreshold, _collectOffset);
+        }
+        #endregion
     }
 }
