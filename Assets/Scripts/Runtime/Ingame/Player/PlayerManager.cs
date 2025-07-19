@@ -16,7 +16,19 @@ namespace ChristianGamers.Ingame.Player
         public float ThrowPower => _throwPower;
         public Transform MuzzlePivot => _muzzlePivot;
 
+        /// <summary>
+        ///     無敵状態を設定
+        /// </summary>
+        /// <param name="active"></param>
         public void SetInvincible(bool active) => _isInvincible = active;
+
+        /// <summary>
+        ///     ノックバックする
+        /// </summary>
+        public void NockBack()
+        {
+            Debug.Log("NockBack");
+        }
 
         [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
