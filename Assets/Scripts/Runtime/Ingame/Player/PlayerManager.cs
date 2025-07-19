@@ -68,13 +68,11 @@ namespace ChristianGamers.Ingame.Player
 
             // 取得したアイテムのスコアを計算し、スコアマネージャーに追加する
             IWithdrawable[] withdrawables = _inventoryManager.GetWithdrawalItems();
-            int sumScore = withdrawables.Sum(e => e.WithdrawScore);
-
-            scoreManager.AddScore(sumScore);
 
             // 取得したアイテムをインベントリから削除する
             foreach (IWithdrawable withdrawable in withdrawables)
             {
+                scoreManager.AddScore(withdrawable.WithdrawScore);
                 if (withdrawable is ItemBase item)
                 {
                     _inventoryManager.RemoveItem(item);
