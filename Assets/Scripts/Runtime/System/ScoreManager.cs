@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace ChristianGamers.System.Score
 {
+    /// <summary>
+    ///     スコアを管理するクラス
+    /// </summary>
     public class ScoreManager : MonoBehaviour
     {
         public event Action<int> OnScoreChanged;
