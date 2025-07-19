@@ -12,9 +12,23 @@ namespace ChristianGamers.Ingame.Player
     public class PlayerManager : MonoBehaviour
     {
         public bool IsInvincible => _isInvincible;
+
+        public float ThrowPower => _throwPower;
         public Transform MuzzlePivot => _muzzlePivot;
 
+        /// <summary>
+        ///     無敵状態を設定
+        /// </summary>
+        /// <param name="active"></param>
         public void SetInvincible(bool active) => _isInvincible = active;
+
+        /// <summary>
+        ///     ノックバックする
+        /// </summary>
+        public void NockBack()
+        {
+            Debug.Log("NockBack");
+        }
 
         [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
@@ -31,6 +45,8 @@ namespace ChristianGamers.Ingame.Player
 
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
+        [SerializeField, Tooltip("投げる力の大きさ")]
+        private float _throwPower = 10.0f;
 
         private Rigidbody _rigidbody;
 
@@ -50,6 +66,11 @@ namespace ChristianGamers.Ingame.Player
                 Debug.LogError("Rigidbody component is required on this GameObject.");
             }
 
+            if (!TryGetComponent(out _inventoryManager))
+            {
+                Debug.LogError("InventoryManager component is required on this GameObject.");
+            }
+
             if (_rigidbody != null)
             {
                 _playerController = new(transform, _rigidbody);
@@ -61,6 +82,11 @@ namespace ChristianGamers.Ingame.Player
         private void Start()
         {
             InputBuffer inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
+            if (inputBuffer == null)
+            {
+                Debug.LogError("InputBuffer is not found in the ServiceLocator.");
+                return;
+            }
             RegisterInputActionHandle(inputBuffer);
         }
 
@@ -107,6 +133,10 @@ namespace ChristianGamers.Ingame.Player
 
         }
 
+        /// <summary>
+        ///     入力アクションのハンドルを登録する。
+        /// </summary>
+        /// <param name="inputBuffer"></param>
         private void RegisterInputActionHandle(InputBuffer inputBuffer)
         {
             if (inputBuffer == null)
