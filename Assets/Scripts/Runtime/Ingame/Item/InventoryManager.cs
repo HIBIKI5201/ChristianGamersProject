@@ -35,6 +35,8 @@ namespace ChristianGamers.Ingame.Item
         /// </summary>
         public void SelectItem(float axis)
         {
+            if (_items.Count == 0) return;
+
             int value = (int)Mathf.Sign(axis);
             _itemIndex = (_itemIndex + _items.Count + value) % _items.Count;
 
