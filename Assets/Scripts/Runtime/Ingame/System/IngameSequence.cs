@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ChristianGamers
+namespace ChristianGamers.Ingame.Sequence
 {
     public class IngameSequence : MonoBehaviour
     {
