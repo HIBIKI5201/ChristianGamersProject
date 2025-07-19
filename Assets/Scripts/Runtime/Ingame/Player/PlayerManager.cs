@@ -80,6 +80,7 @@ namespace ChristianGamers.Ingame.Player
         private Vector2 _lookDir;
 
         private bool _isInvincible;
+        private bool _isMoveActionActive;
 
         private void Awake()
         {
@@ -121,7 +122,8 @@ namespace ChristianGamers.Ingame.Player
 
         private void FixedUpdate()
         {
-            _playerController.Move(_moveDir, transform.forward, _moveSpeed);
+            if (_isMoveActionActive)
+                _playerController.Move(_moveDir, transform.forward, _moveSpeed);
         }
 
         /// <summary>
@@ -218,6 +220,8 @@ namespace ChristianGamers.Ingame.Player
                 inputBuffer.MoveAction.performed -= HandleMove;
                 inputBuffer.MoveAction.canceled -= HandleMove;
             }
+
+            _isMoveActionActive = active;
         }
 
         #region
