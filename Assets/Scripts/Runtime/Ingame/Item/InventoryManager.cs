@@ -1,4 +1,5 @@
 using ChristianGamers.Ingame.Item;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace ChristianGamers.Ingame.Item
     public class InventoryManager : MonoBehaviour
     {
         private List<ItemBase> _items = new List<ItemBase>();
+        private int _itemIndex = 0;
 
         /// <summary>
         /// インベントリのリストにアイテムを追加する
@@ -25,7 +27,10 @@ namespace ChristianGamers.Ingame.Item
         /// </summary>
         public void SelectItem(float axis)
         {
+            int value = Math.Sign(axis);
 
+            if (axis == 0) return;
+            _itemIndex += value;
         }
     }
 }

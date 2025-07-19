@@ -3,12 +3,12 @@ using UnityEngine;
 namespace ChristianGamers.Ingame.Item
 {
     /// <summary>
-    /// アイテムの使用
+    /// アイテムが使われる
     /// </summary>
     interface IUseble
     {
         /// <summary>
-        /// アイテムの使用、投げる
+        /// 使用時の動き
         /// </summary>
         public void Use();
     }
