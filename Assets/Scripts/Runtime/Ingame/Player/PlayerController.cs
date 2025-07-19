@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Player
@@ -29,6 +30,12 @@ namespace ChristianGamers.Ingame.Player
             // dir をローカル系からワールド系に変換
             Vector3 moveDir = (right * dir.x + forward.normalized * dir.z).normalized;
 
+            //バフによる影響を計算
+            foreach(Func<float, float> buff in _speedBuffs)
+            {
+                speed = buff(speed);
+            }
+
             _rigidbody.AddForce(moveDir * speed, ForceMode.Force);
         }
 
@@ -43,7 +50,12 @@ namespace ChristianGamers.Ingame.Player
             _self.Rotate(0f, turnAmount, 0f);
         }
 
+        public void RegisterSpeedBuff(Func<float, float> func) => _speedBuffs.Add(func);
+        public void UnregisterSpeedBuff(Func<float, float> func) => _speedBuffs.Remove(func);
+
         private Transform _self;
         private Rigidbody _rigidbody;
+
+        private List<Func<float, float>> _speedBuffs = new();
     }
 }
