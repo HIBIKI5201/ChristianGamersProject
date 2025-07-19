@@ -133,6 +133,10 @@ namespace ChristianGamers.Ingame.Player
 
         }
 
+        /// <summary>
+        ///     入力アクションのハンドルを登録する。
+        /// </summary>
+        /// <param name="inputBuffer"></param>
         private void RegisterInputActionHandle(InputBuffer inputBuffer)
         {
             if (inputBuffer == null)
