@@ -10,6 +10,8 @@ namespace ChristianGamers.Ingame.Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
+        public void SetInvincible(bool active) => _isInvincible = active;
+
         [SerializeField, Tooltip("移動速度")]
         private float _moveSpeed = 10;
         [SerializeField, Tooltip("Y回転速度")]
@@ -21,6 +23,8 @@ namespace ChristianGamers.Ingame.Player
 
         private Vector3 _moveDir;
         private Vector2 _lookDir;
+
+        private bool _isInvincible;
 
         private void Awake()
         {
