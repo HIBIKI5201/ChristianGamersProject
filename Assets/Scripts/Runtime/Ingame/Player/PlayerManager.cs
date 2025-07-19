@@ -133,7 +133,7 @@ namespace ChristianGamers.Ingame.Player
             item.HadGet(_inventoryManager);
         }
 
-        private void HandleUpse(InputAction.CallbackContext context)
+        private void HandleUse(InputAction.CallbackContext context)
         {
             ItemBase item = _inventoryManager.GetSelectedItem();
 
@@ -167,6 +167,10 @@ namespace ChristianGamers.Ingame.Player
             inputBuffer.LookAction.canceled += HandleLook;
 
             inputBuffer.CollectAction.started += HandleCollect;
+
+            inputBuffer.UseAction.started += HandleUse;
+
+            inputBuffer.SelectAction.performed += HandleSelect;
         }
     }
 }
