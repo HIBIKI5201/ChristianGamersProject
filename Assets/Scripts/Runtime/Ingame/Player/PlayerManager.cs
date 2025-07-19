@@ -1,5 +1,6 @@
 using ChristianGamers.Ingame.Item;
 using SymphonyFrameWork.System;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -130,7 +131,21 @@ namespace ChristianGamers.Ingame.Player
             if (item == null) return;
 
             item.HadGet(_inventoryManager);
+        }
 
+        private void HandleUpse(InputAction.CallbackContext context)
+        {
+            ItemBase item = _inventoryManager.GetSelectedItem();
+
+            if (item is IUseble usable) //Usableを継承していたら実行
+            {
+                usable.Use();
+            }
+        }
+
+        private void HandleSelect(InputAction.CallbackContext context)
+        {
+            _inventoryManager.SelectItem(context.ReadValue<float>());
         }
 
         /// <summary>
