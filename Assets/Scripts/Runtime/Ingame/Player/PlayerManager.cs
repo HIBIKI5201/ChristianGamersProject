@@ -50,19 +50,7 @@ namespace ChristianGamers.Ingame.Player
         private void Start()
         {
             InputBuffer inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
-
-            if (inputBuffer != null)
-            {
-                inputBuffer.MoveAction.performed += HandleMove;
-                inputBuffer.MoveAction.canceled += HandleMove;
-
-                inputBuffer.LookAction.performed += HandleLook;
-                inputBuffer.LookAction.canceled += HandleLook;
-            }
-            else
-            {
-                Debug.LogWarning("InputBuffer not found in ServiceLocator.");
-            }
+            RegisterInputActionHandle(inputBuffer);
         }
 
         private void Update()
@@ -92,6 +80,30 @@ namespace ChristianGamers.Ingame.Player
         private void HandleLook(InputAction.CallbackContext context)
         {
             _lookDir = context.ReadValue<Vector2>().normalized;
+        }
+
+        private void HandleCollect(InputAction.CallbackContext context)
+        {
+            // アイテム収集の処理をここに実装
+            // 例えば、周囲のアイテムを検出し、収集するロジックを追加する
+            Debug.Log("Collect action triggered.");
+        }
+
+        private void RegisterInputActionHandle(InputBuffer inputBuffer)
+        {
+            if (inputBuffer == null)
+            {
+                Debug.LogError("InputBuffer is null.");
+                return;
+            }
+
+            inputBuffer.MoveAction.performed += HandleMove;
+            inputBuffer.MoveAction.canceled += HandleMove;
+
+            inputBuffer.LookAction.performed += HandleLook;
+            inputBuffer.LookAction.canceled += HandleLook;
+
+            inputBuffer.CollectAction.started += HandleCollect;
         }
     }
 }
