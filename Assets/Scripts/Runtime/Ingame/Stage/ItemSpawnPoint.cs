@@ -20,11 +20,7 @@ namespace ChristianGamers
 
             //ランダムなスポーンアイテムを取得
             SpawnItem item = GetRandomSpawnItem();
-            if (item.item == null)
-            {
-                Debug.LogError("SpawnItem is null. Please check the configuration.");
-                return;
-            }
+            if (item.item == null) return;
 
             //Pivotの量だけオフセットを掛ける
             Vector3 spawnPosition = transform.TransformPoint(-item.item.SpawnPivot.localPosition);
