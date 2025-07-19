@@ -9,8 +9,10 @@ namespace ChristianGamers.Ingame.Item
     /// 投擲アイテム
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
-    public class ThrowItem : ItemBase, IUseble
+    public class ThrowItem : ItemBase, IUseble, IWithdrawable
     {
+        public int WithdrawScore => _withdrawScore;
+
         public void Use()
         {
             PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();
@@ -35,5 +37,8 @@ namespace ChristianGamers.Ingame.Item
                 Debug.LogError("Rigidbodyがアタッチされていません。");
             }
         }
+
+        [SerializeField]
+        private int _withdrawScore = 10;
     }
 }
