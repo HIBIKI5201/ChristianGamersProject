@@ -88,6 +88,8 @@ namespace ChristianGamers.Ingame.Player
                 Debug.LogError("InputBuffer is not found in the ServiceLocator.");
                 return;
             }
+
+            Cursor.lockState = CursorLockMode.Locked;
             RegisterInputActionHandle(inputBuffer);
         }
 
@@ -139,8 +141,7 @@ namespace ChristianGamers.Ingame.Player
 
             if (item is IUseble usable) //Usableを継承していたら実行
             {
-                usable.Use();
-                _inventoryManager.RemoveItem(item);
+                _inventoryManager.UseSelectedItem();
             }
         }
 
