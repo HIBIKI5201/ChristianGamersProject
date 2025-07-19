@@ -12,6 +12,8 @@ namespace ChristianGamers.Ingame.Player
     public class PlayerManager : MonoBehaviour
     {
         public bool IsInvincible => _isInvincible;
+
+        public float ThrowPower => _throwPower;
         public Transform MuzzlePivot => _muzzlePivot;
 
         public void SetInvincible(bool active) => _isInvincible = active;
@@ -31,6 +33,8 @@ namespace ChristianGamers.Ingame.Player
 
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
+        [SerializeField, Tooltip("投げる力の大きさ")]
+        private float _throwPower = 10.0f;
 
         private Rigidbody _rigidbody;
 
@@ -48,6 +52,11 @@ namespace ChristianGamers.Ingame.Player
             if (!TryGetComponent(out _rigidbody))
             {
                 Debug.LogError("Rigidbody component is required on this GameObject.");
+            }
+
+            if (!TryGetComponent(out _inventoryManager))
+            {
+                Debug.LogError("InventoryManager component is required on this GameObject.");
             }
 
             if (_rigidbody != null)
