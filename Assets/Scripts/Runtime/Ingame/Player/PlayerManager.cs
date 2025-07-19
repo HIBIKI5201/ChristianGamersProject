@@ -1,3 +1,4 @@
+using ChristianGamers.Ingame.Item;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,24 +12,31 @@ namespace ChristianGamers.Ingame.Player
     public class PlayerManager : MonoBehaviour
     {
         public bool IsInvincible => _isInvincible;
+        public Transform MuzzlePivot => _muzzlePivot;
 
         public void SetInvincible(bool active) => _isInvincible = active;
 
+        [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
         private float _moveSpeed = 10;
         [SerializeField, Tooltip("Y回転速度")]
         private Vector2 _rotationSpeed = new Vector2(10, 10);
 
+        [Header("アイテム収集系設定")]
         [SerializeField, Min(0), Tooltip("アイテムを収集する範囲")]
         private float _collectRange = 2.0f;
 
         [SerializeField, Range(0, 360), Tooltip("アイテムを収集するための角度の閾値（度数法）")]
         private float _angleThreshold = 45.0f;
 
+        [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
+        private Transform _muzzlePivot;
+
         private Rigidbody _rigidbody;
 
         private PlayerController _playerController;
         private PlayerItemCollecter _playerItemCollecter;
+        private InventoryManager _inventoryManager;
 
         private Vector3 _moveDir;
         private Vector2 _lookDir;
@@ -90,6 +98,13 @@ namespace ChristianGamers.Ingame.Player
             // アイテム収集の処理をここに実装
             // 例えば、周囲のアイテムを検出し、収集するロジックを追加する
             Debug.Log("Collect action triggered.");
+
+            ItemBase item = _playerItemCollecter.GetItem(_collectRange, _angleThreshold);
+
+            if (item == null) return;
+
+            item.HadGet(_inventoryManager);
+
         }
 
         private void RegisterInputActionHandle(InputBuffer inputBuffer)
