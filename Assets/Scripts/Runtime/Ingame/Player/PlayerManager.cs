@@ -1,6 +1,7 @@
 using ChristianGamers.Ingame.Item;
 using SymphonyFrameWork.System;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -50,6 +51,9 @@ namespace ChristianGamers.Ingame.Player
             RegisterMoveActionHandle(_inputBuffer, true); // 移動アクションを再度有効化
         }
 
+        public void RegisterSpeedBuff(Func<float, float> func) => _playerController.RegisterSpeedBuff(func);
+        public void UnregisterSpeedBuff(Func<float, float> func) => _playerController.UnregisterSpeedBuff(func);
+
         [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
         private float _moveSpeed = 10;
@@ -75,6 +79,8 @@ namespace ChristianGamers.Ingame.Player
         private PlayerController _playerController;
         private PlayerItemCollecter _playerItemCollecter;
         private InventoryManager _inventoryManager;
+
+        
 
         private Vector3 _moveDir;
         private Vector2 _lookDir;
