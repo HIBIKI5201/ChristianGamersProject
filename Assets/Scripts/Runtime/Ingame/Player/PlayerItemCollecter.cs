@@ -1,4 +1,5 @@
 using ChristianGamers.Ingame.Item;
+using ChristianGamers.Utility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,16 +35,8 @@ namespace ChristianGamers.Ingame.Player
             foreach (Collider hit in hits)
             {
                 //アイテムかどうかを確認
-                Transform hitTransform = hit.transform;
-                ItemBase item = null;
-                while (!hitTransform.TryGetComponent(out item))
-                {
-                    if (hitTransform.parent == null)
-                        break; // 親がいない場合は諦める
-
-                    hitTransform = hitTransform.parent; // 親をたどる
-                }
-
+                ItemBase item = TransformUtility.FindTypeByParents<ItemBase>(hit.transform);
+                
                 if (item == null) continue; // アイテムではない
 
                 // 角度を計算
