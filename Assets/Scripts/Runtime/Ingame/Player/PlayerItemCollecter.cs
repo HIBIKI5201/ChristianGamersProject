@@ -22,10 +22,12 @@ namespace ChristianGamers.Ingame.Player
         /// <param name="range">回収半径</param>
         /// <param name="angleThreshold">回収範囲（度数）</param>
         /// <returns></returns>
-        public ItemBase GetItem(float range, float angleThreshold)
+        public ItemBase GetItem(float range, float angleThreshold, Vector3 offset = new())
         {
+            Vector3 position = _self.position + offset;
+
             //範囲内のオブジェクトを取得
-            Collider[] hits = Physics.OverlapSphere(_self.position, range);
+            Collider[] hits = Physics.OverlapSphere(position, range);
 
             ItemBase result = null;
             float minAngle = float.MinValue;
@@ -35,7 +37,7 @@ namespace ChristianGamers.Ingame.Player
                 if (!hit.TryGetComponent(out ItemBase item)) continue;
 
                 // 角度を計算
-                Vector3 directionToItem = hit.transform.position - _self.position;
+                Vector3 directionToItem = hit.transform.position - position;
                 float angle = Vector3.Angle(_self.forward, directionToItem);
 
                 // 角度が閾値以下かつアングルがより少ないものを収集対象にする
@@ -50,5 +52,38 @@ namespace ChristianGamers.Ingame.Player
         }
 
         private Transform _self;
+
+        #region Debug
+        public static void DrawGizmos(Transform self, float collectRange, float angleThreshold, Vector3 offset = new())
+        {
+            Vector3 position = self.position + offset;
+            Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
+
+            int segments = 24; // 円周の分割数
+            float radius = Mathf.Tan(Mathf.Deg2Rad * angleThreshold) * collectRange; // コーン底面の半径
+
+            Vector3 origin = position;
+            Vector3 forward = self.forward;
+            Quaternion rotation = Quaternion.LookRotation(forward);
+
+            // コーン底面の円周点を計算して線で描く
+            Vector3 prevPoint = Vector3.zero;
+            for (int i = 0; i <= segments; i++)
+            {
+                float angle = i * (360f / segments);
+                Vector3 localPos = new Vector3(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle), 1) * collectRange;
+                localPos = localPos.normalized * radius;
+                localPos.z = collectRange;
+
+                Vector3 worldPos = origin + rotation * localPos;
+
+                if (i > 0)
+                    Gizmos.DrawLine(prevPoint, worldPos); // 底面円の線
+
+                Gizmos.DrawLine(origin, worldPos); // 頂点から円周への線
+                prevPoint = worldPos;
+            }
+        }
+        #endregion
     }
 }
