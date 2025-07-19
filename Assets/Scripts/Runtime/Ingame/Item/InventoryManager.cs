@@ -30,7 +30,13 @@ namespace ChristianGamers.Ingame.Item
             int value = Math.Sign(axis);
 
             if (axis == 0) return;
-            _itemIndex += value;
+            _itemIndex = (_itemIndex * 2 + value) % _items.Count;
         }
+
+        /// <summary>
+        ///     選択されているアイテムを取得する
+        /// </summary>
+        /// <returns></returns>
+        public ItemBase GetSelectedItem() => _items[_itemIndex];
     }
 }
