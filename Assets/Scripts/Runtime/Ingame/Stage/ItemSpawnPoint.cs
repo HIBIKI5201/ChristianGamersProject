@@ -27,7 +27,7 @@ namespace ChristianGamers
             }
 
             //Pivotの量だけオフセットを掛ける
-            Vector3 spawnPosition = transform.TransformPoint(item.item.SpawnPivot.localPosition);
+            Vector3 spawnPosition = transform.TransformPoint(-item.item.SpawnPivot.localPosition);
             // アイテムをスポーンポイントの位置に生成
             Instantiate(item.item, spawnPosition, Quaternion.identity);
 
