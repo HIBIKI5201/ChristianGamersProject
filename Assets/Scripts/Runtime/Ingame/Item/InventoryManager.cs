@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,7 +56,7 @@ namespace ChristianGamers.Ingame.Item
                 RemoveItem(selectedItem);
 
                 //アイテム総数が減っているのでインデックスを減らす
-                if (_itemIndex != 0) _itemIndex--; 
+                if (_itemIndex != 0) _itemIndex--;
             }
             else
             {
