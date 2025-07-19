@@ -54,6 +54,11 @@ namespace ChristianGamers.Ingame.Player
                 Debug.LogError("Rigidbody component is required on this GameObject.");
             }
 
+            if (!TryGetComponent(out _inventoryManager))
+            {
+                Debug.LogError("InventoryManager component is required on this GameObject.");
+            }
+
             if (_rigidbody != null)
             {
                 _playerController = new(transform, _rigidbody);
