@@ -64,6 +64,10 @@ namespace ChristianGamers.Ingame.Player
             _moveDir = new Vector3(dir.x, 0, dir.y);
         }
 
+        /// <summary>
+        ///     入力アクションのコールバックを処理し、視点の方向を更新する。
+        /// </summary>
+        /// <param name="context"></param>
         private void HandleLook(InputAction.CallbackContext context)
         {
             _lookDir = context.ReadValue<Vector2>().normalized;
@@ -72,6 +76,9 @@ namespace ChristianGamers.Ingame.Player
         /// <summary>
         ///     入力の方向に応じてプレイヤーを移動させる。
         /// </summary>
+        /// <param name="dir"></param>
+        /// <param name="forward"></param>
+        /// <param name="speed"></param>
         private void Move(Vector3 dir, Vector3 forward, float speed)
         {
             // forward（前）と right（右）を計算
@@ -83,6 +90,11 @@ namespace ChristianGamers.Ingame.Player
             _rigidbody.AddForce(moveDir * speed, ForceMode.Force);
         }
 
+        /// <summary>
+        ///     入力の方向に応じてプレイヤーをY軸回転させる。
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <param name="rotationSpeed"></param>
         private void RotateYaw(Vector2 dir, float rotationSpeed)
         {
             float turnAmount = dir.x * rotationSpeed * Time.deltaTime;
