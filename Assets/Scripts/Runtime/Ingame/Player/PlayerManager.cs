@@ -26,9 +26,28 @@ namespace ChristianGamers.Ingame.Player
         /// <summary>
         ///     ノックバックする
         /// </summary>
-        public void NockBack()
+        public async void KnockBack(Vector3 power, float StunTime)
         {
+            if (_rigidbody == null)
+            {
+                Debug.LogError("Rigidbody is not assigned.");
+                return;
+            }
+
             Debug.Log("NockBack");
+
+            RegisterMoveActionHandle(_inputBuffer, false); // 移動アクションを無効化
+
+            _rigidbody.linearVelocity = Vector3.zero; // 既存の速度をリセット
+            _rigidbody.AddForce(power, ForceMode.Impulse);
+
+            try
+            {
+                await Awaitable.WaitForSecondsAsync(StunTime, destroyCancellationToken);
+            }
+            catch (OperationCanceledException) { }
+
+            RegisterMoveActionHandle(_inputBuffer, true); // 移動アクションを再度有効化
         }
 
         [Header("移動系設定")]
@@ -51,6 +70,7 @@ namespace ChristianGamers.Ingame.Player
         private float _throwPower = 10.0f;
 
         private Rigidbody _rigidbody;
+        private InputBuffer _inputBuffer;
 
         private PlayerController _playerController;
         private PlayerItemCollecter _playerItemCollecter;
@@ -83,15 +103,15 @@ namespace ChristianGamers.Ingame.Player
 
         private void Start()
         {
-            InputBuffer inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
-            if (inputBuffer == null)
+            _inputBuffer = ServiceLocator.GetInstance<InputBuffer>();
+            if (_inputBuffer == null)
             {
                 Debug.LogError("InputBuffer is not found in the ServiceLocator.");
                 return;
             }
 
             Cursor.lockState = CursorLockMode.Locked;
-            RegisterInputActionHandle(inputBuffer);
+            RegisterInputActionHandle(_inputBuffer);
         }
 
         private void Update()
@@ -163,8 +183,7 @@ namespace ChristianGamers.Ingame.Player
                 return;
             }
 
-            inputBuffer.MoveAction.performed += HandleMove;
-            inputBuffer.MoveAction.canceled += HandleMove;
+            RegisterMoveActionHandle(inputBuffer, true);
 
             inputBuffer.LookAction.performed += HandleLook;
             inputBuffer.LookAction.canceled += HandleLook;
@@ -174,6 +193,31 @@ namespace ChristianGamers.Ingame.Player
             inputBuffer.UseAction.started += HandleUse;
 
             inputBuffer.SelectAction.performed += HandleSelect;
+        }
+
+        /// <summary>
+        ///     入力バッファの移動アクションを登録する。
+        /// </summary>
+        /// <param name="inputBuffer"></param>
+        /// <param name="active"></param>
+        private void RegisterMoveActionHandle(InputBuffer inputBuffer, bool active)
+        {
+            if (inputBuffer == null)
+            {
+                Debug.LogError("InputBuffer is null.");
+                return;
+            }
+
+            if (active) //アクティブなら購買
+            {
+                inputBuffer.MoveAction.performed += HandleMove;
+                inputBuffer.MoveAction.canceled += HandleMove;
+            }
+            else //非アクティブなら購読解除
+            {
+                inputBuffer.MoveAction.performed -= HandleMove;
+                inputBuffer.MoveAction.canceled -= HandleMove;
+            }
         }
 
         #region
