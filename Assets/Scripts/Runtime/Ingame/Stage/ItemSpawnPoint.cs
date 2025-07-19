@@ -27,7 +27,7 @@ namespace ChristianGamers
             if (item.item == null) return;
 
             //Pivotの量だけオフセットを掛ける
-            Vector3 spawnPosition = transform.TransformPoint(-item.item.SpawnPivot.localPosition);
+            Vector3 spawnPosition = transform.TransformPoint(item.offSet);
             // アイテムをスポーンポイントの位置に生成
             Instantiate(item.item, spawnPosition, Quaternion.identity);
 
@@ -70,18 +70,18 @@ namespace ChristianGamers
             // エディタ上でのデバッグ用に、一定時間ごとにスポーンアイテムを切り替える
             int index = (int)(EditorApplication.timeSinceStartup / _switchingTime) % _spawnItems.Length;
 
-            ItemBase item = _spawnItems[index].item;
-            if (item == null) return;
+            SpawnItem spawnItem = _spawnItems[index];
+            if (spawnItem.item == null) return;
 
             Gizmos.color = Color.green;
-            foreach (MeshFilter mf in item.GetComponentsInChildren<MeshFilter>())
+            foreach (MeshFilter mf in spawnItem.item.GetComponentsInChildren<MeshFilter>())
             {
                 if (mf == null) continue;
                 Gizmos.DrawWireMesh(
                     mf.sharedMesh,
                     transform.position
                     + mf.transform.localPosition
-                    + -item.SpawnPivot.localPosition,
+                    + spawnItem.offSet,
                     Quaternion.identity,
                     mf.transform.localScale);
             }
@@ -95,6 +95,7 @@ namespace ChristianGamers
         {
             public ItemBase item;
             public int spawnWeight;
+            public Vector3 offSet;
         }
     }
 }
