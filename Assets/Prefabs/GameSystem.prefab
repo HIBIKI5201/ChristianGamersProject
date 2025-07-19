@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveActionName: Move
+  _lookActionName: Look
 --- !u!114 &5760772203196905732
 MonoBehaviour:
   m_ObjectHideFlags: 0
