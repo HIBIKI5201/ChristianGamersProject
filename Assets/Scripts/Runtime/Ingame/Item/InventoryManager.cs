@@ -77,7 +77,10 @@ namespace ChristianGamers.Ingame.Item
         {
             if (_items.Count == 0) return Array.Empty<IWithdrawable>();
 
-            return _items.Select(item => item as IWithdrawable).ToArray();
+            return _items
+                .Select(item => item as IWithdrawable)
+                .Where(item => item != null)
+                .ToArray();
         }
     }
 }
