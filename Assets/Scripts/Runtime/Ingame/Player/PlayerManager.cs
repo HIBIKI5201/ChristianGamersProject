@@ -28,6 +28,7 @@ namespace ChristianGamers.Ingame.Player
         private Rigidbody _rigidbody;
 
         private PlayerController _playerController;
+        private PlayerItemCollecter _playerItemCollecter;
 
         private Vector3 _moveDir;
         private Vector2 _lookDir;
@@ -43,8 +44,10 @@ namespace ChristianGamers.Ingame.Player
 
             if (_rigidbody != null)
             {
-                _playerController = new PlayerController(transform, _rigidbody);
+                _playerController = new(transform, _rigidbody);
             }
+
+            _playerItemCollecter = new(transform);
         }
 
         private void Start()

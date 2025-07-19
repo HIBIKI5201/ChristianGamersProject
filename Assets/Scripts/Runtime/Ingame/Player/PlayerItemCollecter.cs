@@ -8,9 +8,13 @@ namespace ChristianGamers.Ingame.Player
     /// <summary>
     ///     プレイヤーがアイテムを収集するためのクラス。
     /// </summary>]
-    [Serializable]
     public class PlayerItemCollecter
     {
+        public PlayerItemCollecter(Transform self)
+        {
+            _self = self;
+        }
+
         /// <summary>
         ///     範囲内のアイテムを取得する
         /// </summary>
@@ -18,10 +22,10 @@ namespace ChristianGamers.Ingame.Player
         /// <param name="range">回収半径</param>
         /// <param name="angleThreshold">回収範囲（度数）</param>
         /// <returns></returns>
-        public ItemBase[] GetItems(Transform selfPos, float range, float angleThreshold)
+        public ItemBase[] GetItems(float range, float angleThreshold)
         {
             //範囲内のオブジェクトを取得
-            Collider[] hits = Physics.OverlapSphere(selfPos.position, range);
+            Collider[] hits = Physics.OverlapSphere(_self.position, range);
 
             List<ItemBase> result = new List<ItemBase>();
             foreach (Collider hit in hits)
@@ -30,8 +34,8 @@ namespace ChristianGamers.Ingame.Player
                 if (!hit.TryGetComponent(out ItemBase item)) continue;
 
                 // 角度を計算
-                Vector3 directionToItem = hit.transform.position - selfPos.position;
-                float angle = Vector3.Angle(selfPos.forward, directionToItem);
+                Vector3 directionToItem = hit.transform.position - _self.position;
+                float angle = Vector3.Angle(_self.forward, directionToItem);
 
                 // 角度が閾値以下なら収集可能
                 if (angle <= angleThreshold)
@@ -42,5 +46,7 @@ namespace ChristianGamers.Ingame.Player
 
             return result.ToArray();
         }
+
+        private Transform _self;
     }
 }
