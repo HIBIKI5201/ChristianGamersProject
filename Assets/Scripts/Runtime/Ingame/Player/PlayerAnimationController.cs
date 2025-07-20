@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Player
 {
+    [Serializable]
     public class PlayerAnimationController
     {
         public PlayerAnimationController(Animator animator)
