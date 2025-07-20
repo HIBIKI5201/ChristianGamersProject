@@ -89,7 +89,7 @@ namespace ChristianGamers.Ingame.Item
         /// </summary>
         /// <returns></returns>
         public ItemBase GetSelectedItem() =>
-            0 < _items.Count ? _items[_itemIndex] : null;
+            0 < _items.Count ? _items[_itemIndex % _items.Count] : null;
 
         public IWithdrawable[] GetWithdrawalItems()
         {
