@@ -38,18 +38,21 @@ namespace ChristianGamers.Ingame.Player
 
             Debug.Log("NockBack");
 
-            RegisterMoveActionHandle(_inputBuffer, false); // 移動アクションを無効化
+            _isMoveActionActive = false;
 
             _rigidbody.linearVelocity = Vector3.zero; // 既存の速度をリセット
             _rigidbody.AddForce(power, ForceMode.Impulse);
+            _animController.SetMoveDirParam(Vector2.zero);
 
             try
             {
                 await Awaitable.WaitForSecondsAsync(StunTime, destroyCancellationToken);
             }
             catch (OperationCanceledException) { }
-
-            RegisterMoveActionHandle(_inputBuffer, true); // 移動アクションを再度有効化
+            finally
+            {
+                _isMoveActionActive = true;
+            }
         }
 
         public void RegisterSpeedBuff(Func<float, float> func) => _playerController.RegisterSpeedBuff(func);
@@ -133,6 +136,8 @@ namespace ChristianGamers.Ingame.Player
 
             _playerItemCollecter = new(transform);
             _inventoryManager = new(_maxWeight);
+
+            _isMoveActionActive = true;
         }
 
         private void Start()
@@ -218,7 +223,8 @@ namespace ChristianGamers.Ingame.Player
                 return;
             }
 
-            RegisterMoveActionHandle(inputBuffer, true);
+            inputBuffer.MoveAction.performed += HandleMove;
+            inputBuffer.MoveAction.canceled += HandleMove;
 
             inputBuffer.LookAction.performed += HandleLook;
             inputBuffer.LookAction.canceled += HandleLook;
@@ -228,33 +234,6 @@ namespace ChristianGamers.Ingame.Player
             inputBuffer.UseAction.started += HandleUse;
 
             inputBuffer.SelectAction.performed += HandleSelect;
-        }
-
-        /// <summary>
-        ///     入力バッファの移動アクションを登録する。
-        /// </summary>
-        /// <param name="inputBuffer"></param>
-        /// <param name="active"></param>
-        private void RegisterMoveActionHandle(InputBuffer inputBuffer, bool active)
-        {
-            if (inputBuffer == null)
-            {
-                Debug.LogError("InputBuffer is null.");
-                return;
-            }
-
-            if (active) //アクティブなら購買
-            {
-                inputBuffer.MoveAction.performed += HandleMove;
-                inputBuffer.MoveAction.canceled += HandleMove;
-            }
-            else //非アクティブなら購読解除
-            {
-                inputBuffer.MoveAction.performed -= HandleMove;
-                inputBuffer.MoveAction.canceled -= HandleMove;
-            }
-
-            _isMoveActionActive = active;
         }
 
         #region
