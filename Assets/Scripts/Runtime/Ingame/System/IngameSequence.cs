@@ -48,6 +48,9 @@ namespace ChristianGamers.Ingame.Sequence
                 timer.Stop();
                 player.SetActiveInputHandle(false);
                 _bgmCancellationTokenSource.Cancel();
+
+                if (TryGetComponent(out SceneLoad component))
+                    component.LoadScene();
             }
         }
 
