@@ -1,12 +1,15 @@
+
 using ChristianGamers.Ingame.Item;
 using ChristianGamers.Utility;
+using System;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Player
 {
     /// <summary>
     ///     プレイヤーがアイテムを収集するためのクラス。
-    /// </summary>]
+    /// </summary>
+    [Serializable]
     public class PlayerItemCollecter
     {
         public PlayerItemCollecter(Transform self)

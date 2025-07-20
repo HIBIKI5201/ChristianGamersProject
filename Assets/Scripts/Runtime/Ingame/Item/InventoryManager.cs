@@ -11,7 +11,7 @@ namespace ChristianGamers.Ingame.Item
     [Serializable]
     public class InventoryManager
     {
-        public event Action<float> OnWeightChanged;
+        public event Action<float, float> OnWeightChanged;
 
         public InventoryManager(float maxWeight)
         {
@@ -34,7 +34,7 @@ namespace ChristianGamers.Ingame.Item
             if (_maxWeight < sumWeight) return false;
 
             _items.Add(item);
-            OnWeightChanged?.Invoke(sumWeight);
+            OnWeightChanged?.Invoke(_maxWeight, sumWeight);
             return true;
         }
 
@@ -45,6 +45,8 @@ namespace ChristianGamers.Ingame.Item
         public void RemoveItem(ItemBase item)
         {
             _items.Remove(item);
+            float sum = _items.Sum(i => i.Weight);
+            OnWeightChanged?.Invoke(_maxWeight, sum);
         }
 
         /// <summary>

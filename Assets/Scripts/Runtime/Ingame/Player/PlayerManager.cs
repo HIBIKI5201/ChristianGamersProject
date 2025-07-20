@@ -1,6 +1,5 @@
 using ChristianGamers.Ingame.Item;
 using ChristianGamers.System.Score;
-using ChristianGamers.Utility;
 using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
@@ -14,6 +13,12 @@ namespace ChristianGamers.Ingame.Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
+        public event Action<float, float> OnWeightChanged
+        {
+            add => _inventoryManager.OnWeightChanged += value;
+            remove => _inventoryManager.OnWeightChanged -= value;
+        }
+
         public bool IsInvincible => _isInvincible;
 
         public float ThrowPower => _throwPower;
@@ -79,6 +84,24 @@ namespace ChristianGamers.Ingame.Player
                 {
                     _inventoryManager.RemoveItem(item);
                 }
+            }
+        }
+
+        public void SetActiveInputHandle(bool active)
+        {
+            if (_inputBuffer == null)
+            {
+                Debug.LogWarning("input buffer is null");
+                return;
+            }
+
+            if (active)
+            {
+                RegisterInputActionHandle(_inputBuffer);
+            }
+            else
+            {
+                UnregisterInputActionHandle(_inputBuffer);
             }
         }
 
@@ -150,7 +173,6 @@ namespace ChristianGamers.Ingame.Player
             }
 
             Cursor.lockState = CursorLockMode.Locked;
-            RegisterInputActionHandle(_inputBuffer);
         }
 
         private void Update()
@@ -234,6 +256,27 @@ namespace ChristianGamers.Ingame.Player
             inputBuffer.UseAction.started += HandleUse;
 
             inputBuffer.SelectAction.performed += HandleSelect;
+        }
+
+        private void UnregisterInputActionHandle(InputBuffer inputBuffer)
+        {
+            if (inputBuffer == null)
+            {
+                Debug.LogError("InputBuffer is null.");
+                return;
+            }
+
+            inputBuffer.MoveAction.performed -= HandleMove;
+            inputBuffer.MoveAction.canceled -= HandleMove;
+
+            inputBuffer.LookAction.performed -= HandleLook;
+            inputBuffer.LookAction.canceled -= HandleLook;
+
+            inputBuffer.CollectAction.started -= HandleCollect;
+
+            inputBuffer.UseAction.started -= HandleUse;
+
+            inputBuffer.SelectAction.performed -= HandleSelect;
         }
 
         #region
