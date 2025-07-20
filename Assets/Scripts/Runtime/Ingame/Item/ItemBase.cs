@@ -10,8 +10,11 @@ namespace ChristianGamers.Ingame.Item
     {
         public event Action OnHadGet;
 
+        public Sprite IconSprite => _iconSprite;
         public float Weight => _weight;
 
+        [SerializeField]
+        private Sprite _iconSprite;
         [SerializeField, Min(0), Tooltip("重さ")]
         private float _weight = 1;
 
