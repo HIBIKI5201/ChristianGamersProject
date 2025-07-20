@@ -1,17 +1,22 @@
 using System;
 using UnityEngine;
 
-namespace ChristianGamers
+namespace ChristianGamers.Ingame.Sequence
 {
     public class IngameTimer : MonoBehaviour
     {
         public event Action<float> OnTimeUpdate;
+        public event Action OnTimeUp;
 
         /// <summary>
         ///     タイマーをストップする
         /// </summary>
         public void Stop() => _isStop = true;
 
+        [SerializeField]
+        private float _timeLimit = 90;
+
+        private bool _isTimeUp;
         private float _startTime;
         private bool _isStop;
 
@@ -24,7 +29,21 @@ namespace ChristianGamers
         {
             if (_isStop) return;
 
-            OnTimeUpdate?.Invoke(Time.time - _startTime);
+            float remainTime = _timeLimit
+                - Time.time - _startTime; //経過時間を引く
+
+            OnTimeUpdate?.Invoke(remainTime);
+
+            if (!_isTimeUp && remainTime < 0)
+            {
+                _isTimeUp = true;
+                TimeUp();
+            }
+        }
+
+        private void TimeUp()
+        {
+            OnTimeUp?.Invoke();
         }
     }
 }
