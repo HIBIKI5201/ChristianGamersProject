@@ -187,6 +187,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81ec5b0604430464cb38d21dc37e48b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _iconSprite: {fileID: -712631045867808456, guid: 2ebd371be648d864392ecbe2643ea75a, type: 3}
+  _weight: 1
+  _withdrawScore: 10
 --- !u!54 &3911887390260934140
 Rigidbody:
   m_ObjectHideFlags: 0
