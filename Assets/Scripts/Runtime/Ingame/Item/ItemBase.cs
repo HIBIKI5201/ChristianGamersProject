@@ -24,6 +24,11 @@ namespace ChristianGamers.Ingame.Item
             if (inventory.AddItem(this))
             {
                 this.transform.position = Vector3.one * 10000;
+
+                // Rigidbodyがある場合は動かないようにする
+                if (TryGetComponent(out Rigidbody rb))
+                    rb.isKinematic = true;
+
                 OnHadGet?.Invoke(); // アイテムを取得したイベントを呼び出す
                 return true;
             }

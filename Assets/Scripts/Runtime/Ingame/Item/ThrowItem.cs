@@ -1,4 +1,3 @@
-using ChristianGamers.Ingame.Item;
 using ChristianGamers.Ingame.Player;
 using SymphonyFrameWork.System;
 using UnityEngine;
@@ -30,6 +29,8 @@ namespace ChristianGamers.Ingame.Item
 
             if (TryGetComponent(out Rigidbody rb))
             {
+                rb.isKinematic = false; // 動かせるようにする
+                rb.linearVelocity = Vector3.zero; // 既存の速度をリセット
                 rb.AddForce(muzzle.forward * throwForce, ForceMode.Impulse);
             }
             else
