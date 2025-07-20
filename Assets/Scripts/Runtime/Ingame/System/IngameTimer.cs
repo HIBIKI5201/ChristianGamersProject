@@ -8,6 +8,12 @@ namespace ChristianGamers.Ingame.Sequence
         public event Action<float> OnTimeUpdate;
         public event Action OnTimeUp;
 
+        public void Play()
+        {
+            _startTime = Time.time;
+            _isStop = false;
+        }
+
         /// <summary>
         ///     タイマーをストップする
         /// </summary>
@@ -20,9 +26,9 @@ namespace ChristianGamers.Ingame.Sequence
         private float _startTime;
         private bool _isStop;
 
-        private void Start()
+        private void Awake()
         {
-            _startTime = Time.time;
+            _isStop = true;
         }
 
         private void Update()
@@ -30,7 +36,7 @@ namespace ChristianGamers.Ingame.Sequence
             if (_isStop) return;
 
             float remainTime = _timeLimit
-                - Time.time - _startTime; //経過時間を引く
+                - (Time.time - _startTime); //経過時間を引く
 
             OnTimeUpdate?.Invoke(remainTime);
 
