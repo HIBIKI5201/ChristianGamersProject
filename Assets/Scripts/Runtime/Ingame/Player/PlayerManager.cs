@@ -239,12 +239,7 @@ namespace ChristianGamers.Ingame.Player
 
         private void HandleUse(InputAction.CallbackContext context)
         {
-            ItemBase item = _inventoryManager.GetSelectedItem();
-
-            if (item is IUseble usable) //Usableを継承していたら実行
-            {
-                _inventoryManager.UseSelectedItem(this);
-            }
+            _inventoryManager.UseSelectedItem(this);
         }
 
         private void HandleSelect(InputAction.CallbackContext context)
