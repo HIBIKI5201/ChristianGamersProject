@@ -35,7 +35,7 @@ namespace ChristianGamers.Ingame.Item
             //アイテムの所持数が最大値以上なら追加不可
             if (_maxItemCount <= items.Length) return false;
 
-            float sumWeight = items.Sum(i => i.Weight) + item.Weight;
+            float sumWeight = SumInventoryWeight() + item.Weight;
             float strangth = GetFinalStrangth();
 
             // アイテムの重さが最大重量を超える場合は追加しない
@@ -47,6 +47,13 @@ namespace ChristianGamers.Ingame.Item
             OnItemsChanged?.Invoke(_inventory);
 
             OnWeightChanged?.Invoke(strangth, sumWeight);
+
+            //インベントリに一つ目の物が入ったら
+            if (_inventory.Count(e => e != null) == 1) 
+            {
+                _selectIndex = index;
+            }
+
             return true;
         }
 
@@ -64,8 +71,7 @@ namespace ChristianGamers.Ingame.Item
             OnSelectItem?.Invoke(_selectIndex);
 
             //現在の合計値をイベント発行する
-            float sum = _inventory.Sum(i => i?.Weight ?? 0);
-            OnWeightChanged?.Invoke(GetFinalStrangth(), sum);
+            OnWeightChanged?.Invoke(GetFinalStrangth(), SumInventoryWeight());
         }
 
         /// <summary>
@@ -119,8 +125,16 @@ namespace ChristianGamers.Ingame.Item
                 .ToArray();
         }
 
-        public void AddStrangthBuff(Func<float, float> buff) => _weightBuff.Add(buff);
-        public void RemoveStrangthBuff(Func<float, float> buff) => RemoveStrangthBuff(buff);
+        public void AddStrangthBuff(Func<float, float> buff)
+        {
+            _weightBuff.Add(buff);
+            OnWeightChanged?.Invoke(GetFinalStrangth(), SumInventoryWeight());
+        }
+        public void RemoveStrangthBuff(Func<float, float> buff)
+        {
+            RemoveStrangthBuff(buff);
+            OnWeightChanged?.Invoke(GetFinalStrangth(), SumInventoryWeight());
+        }
 
         private ItemBase[] _inventory;
         private int _selectIndex = 0;
@@ -192,5 +206,12 @@ namespace ChristianGamers.Ingame.Item
             return (0 <= origin && _inventory[origin] != null)
                 ? origin : -1;
         }
+
+        /// <summary>
+        ///     インベントリ内の合計重量を返す
+        /// </summary>
+        /// <returns></returns>
+        private float SumInventoryWeight() =>
+            _inventory.Sum(i => i?.Weight ?? 0);
     }
 }
