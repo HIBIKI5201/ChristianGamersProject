@@ -1,7 +1,5 @@
 using ChristianGamers.Ingame.Item;
 using ChristianGamers.Utility;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Player
@@ -36,7 +34,7 @@ namespace ChristianGamers.Ingame.Player
             {
                 //アイテムかどうかを確認
                 ItemBase item = TransformUtility.FindTypeByParents<ItemBase>(hit.transform);
-                
+
                 if (item == null) continue; // アイテムではない
 
                 // 角度を計算
