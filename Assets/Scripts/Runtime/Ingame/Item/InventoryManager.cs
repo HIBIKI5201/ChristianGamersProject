@@ -8,6 +8,7 @@ namespace ChristianGamers.Ingame.Item
     /// <summary>
     ///     インベントリシステム
     /// </summary>
+    [Serializable]
     public class InventoryManager
     {
         public event Action<float> OnWeightChanged;
