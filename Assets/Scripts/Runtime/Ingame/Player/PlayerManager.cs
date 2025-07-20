@@ -70,6 +70,9 @@ namespace ChristianGamers.Ingame.Player
         public void RegisterSpeedBuff(Func<float, float> func) => _playerController.RegisterSpeedBuff(func);
         public void UnregisterSpeedBuff(Func<float, float> func) => _playerController.UnregisterSpeedBuff(func);
 
+        public void RegisterStrangthBuff(Func<float, float> func) => _inventoryManager.AddStrangthBuff(func);
+        public void UnregisterStrangthBuff(Func<float, float> func) => _inventoryManager.RemoveStrangthBuff(func);
+
         public void Withdrawal()
         {
             ScoreManager scoreManager = ServiceLocator.GetInstance<ScoreManager>();
@@ -127,7 +130,7 @@ namespace ChristianGamers.Ingame.Player
         private Vector3 _collectOffset = new Vector3(0, 0.5f, 0);
 
         [SerializeField, Tooltip("インベントリの最大重量")]
-        private float _maxWeight = 10.0f;
+        private float _strangth = 10.0f;
         [SerializeField, Tooltip("インベントリの最大所持数")]
         private int _maxItemCount = 7;
 
@@ -167,7 +170,7 @@ namespace ChristianGamers.Ingame.Player
             }
 
             _playerItemCollecter = new(transform);
-            _inventoryManager = new(_maxWeight, _maxItemCount);
+            _inventoryManager = new(_strangth, _maxItemCount);
 
             _isMoveActionActive = true;
         }
