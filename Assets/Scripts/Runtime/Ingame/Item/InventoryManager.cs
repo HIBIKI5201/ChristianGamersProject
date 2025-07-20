@@ -10,6 +10,8 @@ namespace ChristianGamers.Ingame.Item
     /// </summary>
     public class InventoryManager
     {
+        public event Action<float> OnWeightChanged;
+
         public InventoryManager(float maxWeight)
         {
             _maxWeight = maxWeight;
@@ -31,6 +33,7 @@ namespace ChristianGamers.Ingame.Item
             if (_maxWeight < sumWeight) return false;
 
             _items.Add(item);
+            OnWeightChanged?.Invoke(sumWeight);
             return true;
         }
 
