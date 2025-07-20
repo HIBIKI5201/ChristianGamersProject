@@ -12,7 +12,7 @@ namespace ChristianGamers.Ingame.Player
     /// <summary>
     ///     プレイヤーの管理を行うクラス。
     /// </summary>
-    [RequireComponent(typeof(Rigidbody), typeof(InventoryManager))]
+    [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
         public bool IsInvincible => _isInvincible;
@@ -94,6 +94,9 @@ namespace ChristianGamers.Ingame.Player
         [SerializeField, Tooltip("アイテム収集範囲のオフセット")]
         private Vector3 _collectOffset = new Vector3(0, 0.5f, 0);
 
+        [SerializeField, Tooltip("インベントリの最大重量")]
+        private float _maxWeight = 10.0f;
+
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
         [SerializeField, Tooltip("投げる力の大きさ")]
@@ -132,6 +135,7 @@ namespace ChristianGamers.Ingame.Player
             }
 
             _playerItemCollecter = new(transform);
+            _inventoryManager = new(_maxWeight);
         }
 
         private void Start()
