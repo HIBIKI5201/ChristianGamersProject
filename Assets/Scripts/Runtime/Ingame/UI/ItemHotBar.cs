@@ -2,7 +2,9 @@ using ChristianGamers.Ingame.Item;
 using ChristianGamers.Ingame.Player;
 using DG.Tweening;
 using SymphonyFrameWork.System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +22,8 @@ namespace ChristianGamers
             PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();
             player.OnItemsChanged += HandleItemChange;
             player.OnSelectItem += HandleSelectItem;
+
+            ClearSlot();
         }
 
         private void HandleItemChange(IReadOnlyList<ItemBase> list)
@@ -27,11 +31,19 @@ namespace ChristianGamers
             for (int i = 0; i < list.Count; i++)
             {
                 ItemBase item = list[i];
-                if (item == null) continue;
+                Image slot = _slots[i];
 
-                _slots[i].sprite = item.IconSprite;
+                if (item != null)
+                {
+                    slot.sprite = item.IconSprite;
+                    slot.color = Color.white;
+                }
+                else
+                {
+                    slot.sprite = null;
+                    slot.color = Color.clear;
+                }
             }
-
         }
 
         private void HandleSelectItem(int index)
@@ -44,6 +56,18 @@ namespace ChristianGamers
             {
                 _slots[index].transform.DOScale(1.1f, 0.3f);
                 _lastIndex = index;
+            }
+        }
+        
+        /// <summary>
+        ///     スロットを初期化する
+        /// </summary>
+        private void ClearSlot()
+        {
+            foreach (Image slot in _slots)
+            {
+                slot.sprite = null;
+                slot.color = Color.clear;
             }
         }
     }
