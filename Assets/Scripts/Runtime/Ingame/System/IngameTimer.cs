@@ -8,6 +8,7 @@ namespace ChristianGamers.Ingame.Sequence
         public event Action<float> OnTimeUpdate;
         public event Action OnTimeUp;
 
+        public float TimeLimit => _timeLimit;
         public void Play()
         {
             _startTime = Time.time;

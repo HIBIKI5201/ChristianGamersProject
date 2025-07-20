@@ -15,10 +15,11 @@ namespace ChristianGamers.Ingame.UI
         private void Start()
         {
             IngameTimer timer = ServiceLocator.GetInstance<IngameTimer>();
-            timer.OnTimeUpdate += HandleTimerUpdate;
+            timer.OnTimeUpdate += TimerTextUpdate;
+            TimerTextUpdate(timer.TimeLimit);
         }
 
-        private void HandleTimerUpdate(float time)
+        private void TimerTextUpdate(float time)
         {
             if (_minuteText == null) return;
             if (_secondText == null) return;
