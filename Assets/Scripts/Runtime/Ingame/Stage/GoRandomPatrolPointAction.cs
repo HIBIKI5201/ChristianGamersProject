@@ -7,19 +7,18 @@ using Unity.Properties;
 using UnityEngine.AI;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "GoRandomPatrolPoint", story: "[self] go to random [PatrolPoints]", category: "Action", id: "11eace440f96c160269fdc3133aa697d")]
+[NodeDescription(name: "GoRandomPatrolPoint", story: "[Agent] go to random [PatrolPoints]", category: "Action", id: "11eace440f96c160269fdc3133aa697d")]
 public partial class GoRandomPatrolPointAction : Action
 {
-    [SerializeReference] public BlackboardVariable<GameObject> Self;
+    [SerializeReference] public BlackboardVariable<NavMeshAgent> Agent;
     [SerializeReference] public BlackboardVariable<List<GameObject>> PatrolPoints;
 
-    private NavMeshAgent _navMeshAgent;
 
     protected override Status OnStart()
     {
-        if (!Self.Value.TryGetComponent<NavMeshAgent>(out _navMeshAgent))
+        if (Agent.Value == null || PatrolPoints == null || PatrolPoints.Value.Count <= 0)
         {
-            Debug.LogError("GoRandomPatrolPointAction: Self does not have a NavMeshAgent component.");
+            Debug.LogError("GoRandomPatrolPointAction: failed");
             return Status.Failure;
         }
 
@@ -33,14 +32,15 @@ public partial class GoRandomPatrolPointAction : Action
             return Status.Failure;
         }
 
-        _navMeshAgent.SetDestination(hit.position); //移動開始
+        Agent.Value.SetDestination(hit.position); //移動開始
 
         return Status.Running;
     }
 
     protected override Status OnUpdate()
     {
-        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
+        NavMeshAgent agent = Agent.Value;
+        if (agent.remainingDistance <= agent.stoppingDistance)
         {
             //目的地に到達した場合、ステータスを成功に設定
             return Status.Success;
