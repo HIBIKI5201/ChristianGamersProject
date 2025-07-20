@@ -13,14 +13,16 @@ namespace ChristianGamers.Ingame.Item
     {
         public event Action<float, float> OnWeightChanged;
 
-        public InventoryManager(float maxWeight)
+        public InventoryManager(float maxWeight, float maxItemCount)
         {
             _maxWeight = maxWeight;
+            _maxItemCount = maxItemCount;
         }
 
         private List<ItemBase> _items = new List<ItemBase>();
         private int _itemIndex = 0;
         private float _maxWeight;
+        private float _maxItemCount;
 
         /// <summary>
         ///     インベントリのリストにアイテムを追加する
@@ -28,6 +30,9 @@ namespace ChristianGamers.Ingame.Item
         /// <param name="item"取得したアイテム></param>
         public bool AddItem(ItemBase item)
         {
+            //最大値以上なら追加不可
+            if (_maxItemCount <= _items.Count) return false;
+
             float sumWeight = _items.Sum(i => i.Weight) + item.Weight;
 
             // アイテムの重さが最大重量を超える場合は追加しない
