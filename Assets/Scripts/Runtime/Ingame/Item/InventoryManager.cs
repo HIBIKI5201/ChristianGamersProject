@@ -60,9 +60,10 @@ namespace ChristianGamers.Ingame.Item
             int index = Array.IndexOf(_inventory, item);
             _inventory[index] = null;
             OnItemsChanged?.Invoke(_inventory);
+            _selectIndex = FindNearItemIndex(_selectIndex);
 
             //現在の合計値をイベント発行する
-            float sum = _inventory.Sum(i => i.Weight);
+            float sum = _inventory.Sum(i => i?.Weight ?? 0);
             OnWeightChanged?.Invoke(GetFinalStrangth(), sum);
         }
 
@@ -74,7 +75,7 @@ namespace ChristianGamers.Ingame.Item
             if (_inventory.Length <= 1) return; //一つ以下なら選択できない
 
             int value = (int)Mathf.Sign(axis);
-            _selectIndex = (_selectIndex + _inventory.Length + value) % _inventory.Length;
+            _selectIndex = GetNextItemIndex(_selectIndex, (int)axis);
             OnSelectItem?.Invoke(_selectIndex);
 
             Debug.Log($"index : {_selectIndex}");
@@ -108,8 +109,12 @@ namespace ChristianGamers.Ingame.Item
         /// </summary>
         /// <returns></returns>
         public ItemBase GetSelectedItem() =>
-            0 <= _inventory.Length ? _inventory[_selectIndex] : null;
+            (0 < _inventory.Length && 0 <= _selectIndex) ? _inventory[_selectIndex] : null;
 
+        /// <summary>
+        ///     全ての回収可能なアイテムを返す
+        /// </summary>
+        /// <returns></returns>
         public IWithdrawable[] GetWithdrawalItems()
         {
             if (_inventory.Length <= 0) return Array.Empty<IWithdrawable>();
@@ -129,6 +134,10 @@ namespace ChristianGamers.Ingame.Item
         private int _maxItemCount;
         private List<Func<float, float>> _weightBuff = new();
 
+        /// <summary>
+        ///     最終的な力の量を返す
+        /// </summary>
+        /// <returns></returns>
         private float GetFinalStrangth()
         {
             float maxStrangth = _strangth;
@@ -150,21 +159,44 @@ namespace ChristianGamers.Ingame.Item
         /// <returns></returns>
         private int FindNearItemIndex(int origin)
         {
-            //左右に探索する（右優先）
-            for(int i = 1; i < _inventory.Length; i++)
+            //左右に探索する
+            int rightIndex = GetNextItemIndex(origin, 1);
+            int leftIndex = GetNextItemIndex(-origin, 1);
+
+            //探索結果が該当なしなら終了
+            if (rightIndex < 0 || leftIndex < 0)
             {
-                if (Search(origin + i)) return origin + i;
-                if (Search(origin - i)) return origin - i;
+                return -1;
             }
 
-            return -1;
+            //近い方を返す
+            return (Mathf.Abs(origin - rightIndex) < Mathf.Abs(origin - leftIndex))
+                ? rightIndex : leftIndex;
+        }
 
-            //指定されたインデックスがnullじゃないか確認する
-            bool Search(int index)
+        /// <summary>
+        ///     方向の最も近いアイテムのインデックスを返す
+        ///     見つからなければ元のインデックスを返す
+        ///     ただし元のインデックスもnullなら-1を返す
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        private int GetNextItemIndex(int origin, int dir)
+        {
+            dir = (int)Mathf.Sign(dir);
+
+            for (int i = 1; i < _inventory.Length; i++)//自分を除くので1から開始
             {
+                int index = origin + i * dir;
                 index = (index + _inventory.Length) % _inventory.Length;
-                return _inventory[index] != null;
+
+                if (_inventory[index] != null) return index;
             }
+
+            //オリジンがnullじゃないならoriginを返す
+            return (0 <= origin && _inventory[origin] != null)
+                ? origin : -1;
         }
     }
 }
