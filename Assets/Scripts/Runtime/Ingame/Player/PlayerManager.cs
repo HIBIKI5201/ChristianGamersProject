@@ -81,6 +81,24 @@ namespace ChristianGamers.Ingame.Player
             }
         }
 
+        public void SetActiveInputHandle(bool active)
+        {
+            if (_inputBuffer == null)
+            {
+                Debug.LogWarning("input buffer is null");
+                return;
+            }
+
+            if (active)
+            {
+                RegisterInputActionHandle(_inputBuffer);
+            }
+            else
+            {
+                UnregisterInputActionHandle(_inputBuffer);
+            }
+        }
+
         [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
         private float _moveSpeed = 10;
@@ -149,7 +167,6 @@ namespace ChristianGamers.Ingame.Player
             }
 
             Cursor.lockState = CursorLockMode.Locked;
-            RegisterInputActionHandle(_inputBuffer);
         }
 
         private void Update()
@@ -233,6 +250,27 @@ namespace ChristianGamers.Ingame.Player
             inputBuffer.UseAction.started += HandleUse;
 
             inputBuffer.SelectAction.performed += HandleSelect;
+        }
+
+        private void UnregisterInputActionHandle(InputBuffer inputBuffer)
+        {
+            if (inputBuffer == null)
+            {
+                Debug.LogError("InputBuffer is null.");
+                return;
+            }
+
+            inputBuffer.MoveAction.performed -= HandleMove;
+            inputBuffer.MoveAction.canceled -= HandleMove;
+
+            inputBuffer.LookAction.performed -= HandleLook;
+            inputBuffer.LookAction.canceled -= HandleLook;
+
+            inputBuffer.CollectAction.started -= HandleCollect;
+
+            inputBuffer.UseAction.started -= HandleUse;
+
+            inputBuffer.SelectAction.performed -= HandleSelect;
         }
 
         #region
