@@ -291,6 +291,9 @@ namespace ChristianGamers.Ingame.Player
             inputBuffer.UseAction.started -= HandleUse;
 
             inputBuffer.SelectAction.performed -= HandleSelect;
+
+            _moveDir = Vector3.zero;
+            _lookDir = Vector2.zero;
         }
 
         #region
