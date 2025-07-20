@@ -96,10 +96,6 @@ namespace ChristianGamers.Ingame.Item
                 usebleItem.Use(player);
                 RemoveItem(selectedItem);
             }
-            else
-            {
-                Debug.LogWarning("Selected item is not usable.");
-            }
         }
 
         /// <summary>
