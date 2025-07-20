@@ -61,6 +61,7 @@ namespace ChristianGamers.Ingame.Item
             _inventory[index] = null;
             OnItemsChanged?.Invoke(_inventory);
             _selectIndex = FindNearItemIndex(_selectIndex);
+            OnSelectItem?.Invoke(_selectIndex);
 
             //現在の合計値をイベント発行する
             float sum = _inventory.Sum(i => i?.Weight ?? 0);
@@ -88,15 +89,12 @@ namespace ChristianGamers.Ingame.Item
                 Debug.LogWarning("No items to use.");
                 return;
             }
+
             ItemBase selectedItem = GetSelectedItem();
             if (selectedItem is IUseble usebleItem)
             {
                 usebleItem.Use(player);
                 RemoveItem(selectedItem);
-
-                //一番近いアイテムをセレクトする
-                _selectIndex = FindNearItemIndex(_selectIndex);
-                OnSelectItem?.Invoke(_selectIndex);
             }
             else
             {
@@ -161,7 +159,7 @@ namespace ChristianGamers.Ingame.Item
         {
             //左右に探索する
             int rightIndex = GetNextItemIndex(origin, 1);
-            int leftIndex = GetNextItemIndex(-origin, 1);
+            int leftIndex = GetNextItemIndex(origin, -1);
 
             //探索結果が該当なしなら終了
             if (rightIndex < 0 || leftIndex < 0)
@@ -170,7 +168,7 @@ namespace ChristianGamers.Ingame.Item
             }
 
             //近い方を返す
-            return (Mathf.Abs(origin - rightIndex) < Mathf.Abs(origin - leftIndex))
+            return (Mathf.Abs(origin - rightIndex) <= Mathf.Abs(origin - leftIndex))
                 ? rightIndex : leftIndex;
         }
 
