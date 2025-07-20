@@ -12,15 +12,16 @@ namespace ChristianGamers.Ingame.Player
         /// <summary>
         ///     速度パラメータを設定
         /// </summary>
-        /// <param name="velocity"></param>
-        public void SetVelocityParam(Vector2 velocity)
+        /// <param name="dir"></param>
+        public void SetMoveDirParam(Vector2 dir)
         {
-            _animator.SetFloat(_velocityXHash, velocity.x);
-            _animator.SetFloat(_velocityYHash, velocity.y);
+            dir.Normalize();
+            _animator.SetFloat(_moveXHash, dir.x);
+            _animator.SetFloat(_moveYHash, dir.y);
         }
 
         private readonly Animator _animator;
-        private readonly int _velocityXHash = Animator.StringToHash("VelocityX");
-        private readonly int _velocityYHash = Animator.StringToHash("VelocityY");
+        private readonly int _moveXHash = Animator.StringToHash("MoveX");
+        private readonly int _moveYHash = Animator.StringToHash("MoveY");
     }
 }
