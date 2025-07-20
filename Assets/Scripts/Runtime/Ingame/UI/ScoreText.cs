@@ -1,4 +1,5 @@
 using ChristianGamers.System.Score;
+using DG.Tweening;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,15 +11,21 @@ namespace ChristianGamers
         [SerializeField]
         private Text _scoreText;
 
+        [SerializeField]
+        private float _scoreCountUpDuration = 0.2f;
         private void Start()
         {
             ScoreManager scoreManager = ServiceLocator.GetInstance<ScoreManager>();
-            scoreManager.OnScoreChanged += HandleTextUpdate;
+            scoreManager.OnScoreChanged += HandleScoreTextUpdate;
         }
 
-        private void HandleTextUpdate(int sum, int amount)
+        private void HandleScoreTextUpdate(int sum, int amount)
         {
-            _scoreText.text = $"Score : {sum}";
+            DOTween.To(
+                () => sum - amount,
+                n => _scoreText.text = $"Score : {n.ToString("0000")}", 
+                sum, _scoreCountUpDuration);
+            
         }
     }
 }
