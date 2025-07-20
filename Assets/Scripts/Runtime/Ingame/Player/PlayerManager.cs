@@ -1,9 +1,8 @@
 using ChristianGamers.Ingame.Item;
 using ChristianGamers.System.Score;
+using ChristianGamers.Utility;
 using SymphonyFrameWork.System;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -108,8 +107,7 @@ namespace ChristianGamers.Ingame.Player
         private PlayerController _playerController;
         private PlayerItemCollecter _playerItemCollecter;
         private InventoryManager _inventoryManager;
-
-        
+        private PlayerAnimationController _animController;
 
         private Vector3 _moveDir;
         private Vector2 _lookDir;
@@ -124,14 +122,13 @@ namespace ChristianGamers.Ingame.Player
                 Debug.LogError("Rigidbody component is required on this GameObject.");
             }
 
-            if (!TryGetComponent(out _inventoryManager))
-            {
-                Debug.LogError("InventoryManager component is required on this GameObject.");
-            }
+            Animator animator = GetComponentInChildren<Animator>();
+            if (animator)
+                _animController = new(animator);
 
             if (_rigidbody != null)
             {
-                _playerController = new(transform, _rigidbody);
+                _playerController = new(transform, _rigidbody, _animController);
             }
 
             _playerItemCollecter = new(transform);

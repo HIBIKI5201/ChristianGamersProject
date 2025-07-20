@@ -10,10 +10,11 @@ namespace ChristianGamers.Ingame.Player
     [Serializable]
     public class PlayerController
     {
-        public PlayerController(Transform self, Rigidbody rigidbody)
+        public PlayerController(Transform self, Rigidbody rigidbody, PlayerAnimationController animator)
         {
             _self = self;
             _rigidbody = rigidbody;
+            _animator = animator;
         }
 
         /// <summary>
@@ -38,6 +39,8 @@ namespace ChristianGamers.Ingame.Player
 
             _rigidbody.linearVelocity =
                 new Vector3(moveDir.x * speed, _rigidbody.linearVelocity.y, moveDir.z * speed);
+
+            _animator?.SetMoveDirParam(new Vector2(dir.x, dir.z));
         }
 
         /// <summary>
@@ -56,6 +59,7 @@ namespace ChristianGamers.Ingame.Player
 
         private Transform _self;
         private Rigidbody _rigidbody;
+        private PlayerAnimationController _animator;
 
         private List<Func<float, float>> _speedBuffs = new();
     }
