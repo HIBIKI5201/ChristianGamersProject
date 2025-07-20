@@ -20,6 +20,13 @@ namespace ChristianGamers.Ingame.Player
             remove => _inventoryManager.OnItemsChanged -= value;
         }
 
+        public event Action<int> OnSelectItem
+        {
+            add => _inventoryManager.OnSelectItem += value;
+            remove => _inventoryManager.OnSelectItem -= value;
+        }
+
+
         public event Action<float, float> OnWeightChanged
         {
             add => _inventoryManager.OnWeightChanged += value;
