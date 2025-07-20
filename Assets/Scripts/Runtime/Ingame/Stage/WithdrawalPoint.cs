@@ -28,6 +28,7 @@ namespace ChristianGamers.Ingame.Stage
             {
                 Debug.Log("Player has entered the withdrawal point.");
                 player.Withdrawal();
+                OnPlayerWithdrawal?.Invoke();
             }
         }
     }
