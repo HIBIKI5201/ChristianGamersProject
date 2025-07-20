@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7457706300576482537}
   - component: {fileID: 4938186985661549113}
   m_Layer: 0
-  m_Name: Interference
+  m_Name: Customer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
