@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7457706300576482537}
   - component: {fileID: 4938186985661549113}
   m_Layer: 0
-  m_Name: Interference
+  m_Name: Customer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,6 +51,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _knockBackPower: 10
   _stunTime: 1
+  _respawnTime: 5
+  _BBPatrolPoints: Patrol Points
+  _animationModel: {fileID: 8210839619655201625}
+  _ragdollPrefab: {fileID: 8833625502290345151, guid: bf00f6cf416d50e48becb25524d97656, type: 3}
 --- !u!54 &5135447125213084962
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -76,7 +80,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!195 &7457706300576482537
 NavMeshAgent:
@@ -301,6 +305,11 @@ PrefabInstance:
 --- !u!95 &3195655064405275545 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3119147816240297751, guid: 99a7094e0f9c98e4caf7d7305c3b9421, type: 3}
+  m_PrefabInstance: {fileID: 508993826518320270}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8210839619655201625 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8566563448727386071, guid: 99a7094e0f9c98e4caf7d7305c3b9421, type: 3}
   m_PrefabInstance: {fileID: 508993826518320270}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8843120839897393635 stripped
