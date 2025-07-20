@@ -2,6 +2,7 @@ using ChristianGamers.Ingame.Item;
 using ChristianGamers.System.Score;
 using SymphonyFrameWork.System;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,12 @@ namespace ChristianGamers.Ingame.Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
+        public event Action<IReadOnlyList<ItemBase>> OnItemsChanged
+        {
+            add => _inventoryManager.OnItemsChanged += value;
+            remove => _inventoryManager.OnItemsChanged -= value;
+        }
+
         public event Action<float, float> OnWeightChanged
         {
             add => _inventoryManager.OnWeightChanged += value;
@@ -226,7 +233,7 @@ namespace ChristianGamers.Ingame.Player
 
             if (item is IUseble usable) //Usableを継承していたら実行
             {
-                _inventoryManager.UseSelectedItem();
+                _inventoryManager.UseSelectedItem(this);
             }
         }
 

@@ -1,5 +1,4 @@
 using ChristianGamers.Ingame.Player;
-using SymphonyFrameWork.System;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Item
@@ -10,15 +9,8 @@ namespace ChristianGamers.Ingame.Item
     [RequireComponent(typeof(Rigidbody))]
     public class ThrowItem : ItemBase, IUseble
     {
-        public void Use()
+        public void Use(PlayerManager player)
         {
-            PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();
-            if (player == null)
-            {
-                Debug.LogError("PlayerManagerが見つかりません。");
-                return;
-            }
-
             Transform muzzle = player.MuzzlePivot;
 
             // マズルピボットの位置にアイテムを配置
