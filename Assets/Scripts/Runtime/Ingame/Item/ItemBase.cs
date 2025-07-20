@@ -21,9 +21,9 @@ namespace ChristianGamers.Ingame.Item
         public bool HadGet(InventoryManager inventory)
         {
             //プレイヤーの見えない場所に飛ばす
-            this.transform.position = Vector3.one * 10000;
             if (inventory.AddItem(this))
             {
+                this.transform.position = Vector3.one * 10000;
                 OnHadGet?.Invoke(); // アイテムを取得したイベントを呼び出す
                 return true;
             }
