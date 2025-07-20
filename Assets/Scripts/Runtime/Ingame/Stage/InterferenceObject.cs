@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using UnityEngine.AI;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 
 namespace ChristianGamers.Ingame.Stage
 {
@@ -24,10 +25,17 @@ namespace ChristianGamers.Ingame.Stage
         private float _stunTime = 1f; // ノックバック中のスタン時間
 
         [SerializeField, Tooltip("リスポーンするまでの時間")]
-        private float _respawnTime;
+        private float _respawnTime = 5;
 
-        [SerializeField, Tooltip("Agentの")]
+        [SerializeField, Tooltip("AgentのBBのパトロールポイント")]
         private string _BBPatrolPoints = "Patrol Points";
+
+        [Header("モデル")]
+        [SerializeField]
+        private GameObject _animationModel;
+        [Space]
+        [SerializeField]
+        private GameObject _ragdollPrefab;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -46,6 +54,12 @@ namespace ChristianGamers.Ingame.Stage
                     agent.End();
                     nvAgent.enabled = false;
 
+                    _animationModel.SetActive(false);
+                    GameObject ragdoll = 
+                        Instantiate(_ragdollPrefab, 
+                        _animationModel.transform.position,
+                        _animationModel.transform.rotation);
+
                     Dead();
 
                     RespawnWithDelay(_respawnTime, () =>
@@ -60,6 +74,9 @@ namespace ChristianGamers.Ingame.Stage
 
                             transform.position = point.position; //ポイントにワープ
                         }
+
+                        Destroy(ragdoll);
+                        _animationModel.SetActive(true);
 
                         rb.excludeLayers = 0; //レイヤーを戻す
                         nvAgent.enabled = true;
