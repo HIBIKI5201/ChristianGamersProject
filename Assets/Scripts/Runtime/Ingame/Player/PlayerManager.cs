@@ -121,6 +121,8 @@ namespace ChristianGamers.Ingame.Player
 
         [SerializeField, Tooltip("インベントリの最大重量")]
         private float _maxWeight = 10.0f;
+        [SerializeField, Tooltip("インベントリの最大所持数")]
+        private int _maxItemCount = 7;
 
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
@@ -158,7 +160,7 @@ namespace ChristianGamers.Ingame.Player
             }
 
             _playerItemCollecter = new(transform);
-            _inventoryManager = new(_maxWeight);
+            _inventoryManager = new(_maxWeight, _maxItemCount);
 
             _isMoveActionActive = true;
         }
