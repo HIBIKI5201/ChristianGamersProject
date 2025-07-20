@@ -1,14 +1,18 @@
 using ChristianGamers.Ingame.Player;
+using DG.Tweening;
 using SymphonyFrameWork.System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace ChristianGamers
 {
-    public class WeightGauge : MonoBehaviour
+    public class WeightGuage : MonoBehaviour
     {
         [SerializeField]
         private Image _gauge;
+
+        [SerializeField, Min(0)]
+        private float _guageFillDuration = 0.5f;
 
         void Start()
         {
@@ -18,7 +22,7 @@ namespace ChristianGamers
 
         private void WeightGaugeUpdate(float max, float value)
         {
-            _gauge.fillAmount = value / max;
+            _gauge.DOFillAmount(value / max, _guageFillDuration);
         }
     }
 }
