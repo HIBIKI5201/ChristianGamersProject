@@ -275,7 +275,7 @@ MonoBehaviour:
   - item: {fileID: 2746007795415559096, guid: 0de78238568c1174eb6dd96505979604, type: 3}
     spawnWeight: 3
     offSet: {x: 0, y: 0, z: 0}
-  - item: {fileID: 5515810503133928708, guid: 1421bb2904b885a4a9f857cfa1497fec, type: 3}
+  - item: {fileID: 9207066864512163850, guid: 1421bb2904b885a4a9f857cfa1497fec, type: 3}
     spawnWeight: 2
     offSet: {x: 0, y: 0, z: 0}
   - item: {fileID: 0}
