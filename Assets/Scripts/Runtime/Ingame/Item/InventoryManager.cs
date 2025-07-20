@@ -1,3 +1,4 @@
+using ChristianGamers.Ingame.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +12,21 @@ namespace ChristianGamers.Ingame.Item
     [Serializable]
     public class InventoryManager
     {
+        public event Action<IReadOnlyList<ItemBase>> OnItemsChanged;
         public event Action<float, float> OnWeightChanged;
 
-        public InventoryManager(float maxWeight, float maxItemCount)
+        public InventoryManager(float maxWeight, int maxItemCount)
         {
             _maxWeight = maxWeight;
             _maxItemCount = maxItemCount;
+
+            _items = new ItemBase[_maxItemCount];
         }
 
-        private List<ItemBase> _items = new List<ItemBase>();
-        private int _itemIndex = 0;
+        private ItemBase[] _items;
+        private int _selectIndex = 0;
         private float _maxWeight;
-        private float _maxItemCount;
+        private int _maxItemCount;
 
         /// <summary>
         ///     インベントリのリストにアイテムを追加する
@@ -31,14 +35,18 @@ namespace ChristianGamers.Ingame.Item
         public bool AddItem(ItemBase item)
         {
             //最大値以上なら追加不可
-            if (_maxItemCount <= _items.Count) return false;
+            if (_maxItemCount <= _items.Length) return false;
 
             float sumWeight = _items.Sum(i => i.Weight) + item.Weight;
 
             // アイテムの重さが最大重量を超える場合は追加しない
             if (_maxWeight < sumWeight) return false;
 
-            _items.Add(item);
+            //空いている場所にアイテムを追加
+            int index = Array.IndexOf(_items, null);
+            _items[index] = item;
+            OnItemsChanged?.Invoke(_items);
+
             OnWeightChanged?.Invoke(_maxWeight, sumWeight);
             return true;
         }
@@ -49,7 +57,12 @@ namespace ChristianGamers.Ingame.Item
         /// <param name="item"></param>
         public void RemoveItem(ItemBase item)
         {
-            _items.Remove(item);
+            //アイテムをリストから削除
+            int index = Array.IndexOf(_items, item);
+            _items[index] = null;
+            OnItemsChanged?.Invoke(_items);
+
+            //現在の合計値をイベント発行する
             float sum = _items.Sum(i => i.Weight);
             OnWeightChanged?.Invoke(_maxWeight, sum);
         }
@@ -59,17 +72,17 @@ namespace ChristianGamers.Ingame.Item
         /// </summary>
         public void SelectItem(float axis)
         {
-            if (_items.Count == 0) return;
+            if (_items.Length <= 0) return;
 
             int value = (int)Mathf.Sign(axis);
-            _itemIndex = (_itemIndex + _items.Count + value) % _items.Count;
+            _selectIndex = (_selectIndex + _items.Length + value) % _items.Length;
 
-            Debug.Log($"index : {_itemIndex}");
+            Debug.Log($"index : {_selectIndex}");
         }
 
-        public void UseSelectedItem()
+        public void UseSelectedItem(PlayerManager player)
         {
-            if (_items.Count == 0)
+            if (_items.Length <= 0)
             {
                 Debug.LogWarning("No items to use.");
                 return;
@@ -77,11 +90,11 @@ namespace ChristianGamers.Ingame.Item
             ItemBase selectedItem = GetSelectedItem();
             if (selectedItem is IUseble usebleItem)
             {
-                usebleItem.Use();
+                usebleItem.Use(player);
                 RemoveItem(selectedItem);
 
                 //アイテム総数が減っているのでインデックスを減らす
-                if (_itemIndex != 0) _itemIndex--;
+                if (_selectIndex != 0) _selectIndex--;
             }
             else
             {
@@ -94,11 +107,11 @@ namespace ChristianGamers.Ingame.Item
         /// </summary>
         /// <returns></returns>
         public ItemBase GetSelectedItem() =>
-            0 < _items.Count ? _items[_itemIndex % _items.Count] : null;
+            0 <= _items.Length ? _items[_selectIndex] : null;
 
         public IWithdrawable[] GetWithdrawalItems()
         {
-            if (_items.Count == 0) return Array.Empty<IWithdrawable>();
+            if (_items.Length <= 0) return Array.Empty<IWithdrawable>();
 
             return _items
                 .Select(item => item as IWithdrawable)
