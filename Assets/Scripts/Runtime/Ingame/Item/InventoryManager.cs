@@ -8,18 +8,30 @@ namespace ChristianGamers.Ingame.Item
     /// <summary>
     ///     インベントリシステム
     /// </summary>
-    public class InventoryManager : MonoBehaviour
+    public class InventoryManager
     {
+        public InventoryManager(float maxWeight)
+        {
+            _maxWeight = maxWeight;
+        }
+
         private List<ItemBase> _items = new List<ItemBase>();
         private int _itemIndex = 0;
+        private float _maxWeight;
 
         /// <summary>
         ///     インベントリのリストにアイテムを追加する
         /// </summary>
         /// <param name="item"取得したアイテム></param>
-        public void AddItem(ItemBase item)
+        public bool AddItem(ItemBase item)
         {
+            float sumWeight = _items.Sum(i => i.Weight) + item.Weight;
+
+            // アイテムの重さが最大重量を超える場合は追加しない
+            if (_maxWeight < sumWeight) return false;
+
             _items.Add(item);
+            return true;
         }
 
         /// <summary>
