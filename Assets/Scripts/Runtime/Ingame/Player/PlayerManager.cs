@@ -13,6 +13,12 @@ namespace ChristianGamers.Ingame.Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
+        public event Action<float, float> OnWeightChanged
+        {
+            add => _inventoryManager.OnWeightChanged += value;
+            remove => _inventoryManager.OnWeightChanged -= value;
+        }
+
         public bool IsInvincible => _isInvincible;
 
         public float ThrowPower => _throwPower;
