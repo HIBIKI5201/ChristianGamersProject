@@ -11,7 +11,7 @@ namespace ChristianGamers
     public class ItemHotBar : MonoBehaviour
     {
         [SerializeField]
-        private Image[] _slots;
+        private ItemHotBarSlot[] _slots;
 
         [SerializeField]
         private Sprite _normalSlotSprite;
@@ -34,20 +34,30 @@ namespace ChristianGamers
             for (int i = 0; i < list.Count; i++)
             {
                 ItemBase item = list[i];
-                Image slot = _slots[i];
-                if (!slot.transform.GetChild(0)
-                    .TryGetComponent(out Image child))
-                    continue;
+                Image slot = _slots[i].Self;
+                Image child = _slots[i].Child;
+                Text price = _slots[i].Price;
 
                 if (item != null)
                 {
                     child.sprite = item.IconSprite;
                     child.color = Color.white;
+
+                    //値段があるならテキスト表示
+                    if (item is IWithdrawable withdrawable)
+                    {
+                        price.text = withdrawable.WithdrawScore.ToString("0");
+                    }
+                    else
+                    {
+                        price.text = string.Empty;
+                    }
                 }
                 else
                 {
                     child.sprite = null;
                     child.color = Color.clear;
+                    price.text = string.Empty;
                 }
             }
         }
@@ -56,22 +66,17 @@ namespace ChristianGamers
         {
             if (_slots == null || _slots.Length <= index) return;
 
-            Image lastSlot = _slots[_lastIndex];
+            Image lastSlot = _slots[_lastIndex].Self;
+            Image lastChild = _slots[_lastIndex].Child;
 
-
-            if (!lastSlot.transform.GetChild(0)
-                    .TryGetComponent(out Image lastChild))
-                return;
 
             lastChild.transform.DOScale(1, 0.2f);
             lastSlot.sprite = _normalSlotSprite;
 
             if (0 <= index) //範囲外でなければ
             {
-                Image nextSlot = _slots[index];
-                if (!nextSlot.transform.GetChild(0)
-                        .TryGetComponent(out Image nextChild))
-                    return;
+                Image nextSlot = _slots[index].Self;
+                Image nextChild = _slots[index].Child;  
 
                     nextChild.transform.DOScale(1.1f, 0.3f);
                 nextSlot.sprite = _selectedSlotSprite;
@@ -85,15 +90,12 @@ namespace ChristianGamers
         /// </summary>
         private void ClearSlot()
         {
-            foreach (Image slot in _slots)
+            foreach (ItemHotBarSlot slot in _slots)
             {
-                if (!slot.transform.GetChild(0)
-                    .TryGetComponent(out Image child))
-                    continue;
-
-                slot.sprite = _normalSlotSprite;
-                child.sprite = null;
-                child.color = Color.clear;
+                slot.Self.sprite = _normalSlotSprite;
+                slot.Child.sprite = null;
+                slot.Child.color = Color.clear;
+                slot.Price.text = string.Empty;
             }
         }
     }
