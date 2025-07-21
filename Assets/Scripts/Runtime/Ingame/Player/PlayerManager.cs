@@ -2,6 +2,7 @@ using ChristianGamers.Ingame.Item;
 using ChristianGamers.System.Score;
 using SymphonyFrameWork.System;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,25 @@ namespace ChristianGamers.Ingame.Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
+        public event Action<IReadOnlyList<ItemBase>> OnItemsChanged
+        {
+            add => _inventoryManager.OnItemsChanged += value;
+            remove => _inventoryManager.OnItemsChanged -= value;
+        }
+
+        public event Action<int> OnSelectItem
+        {
+            add => _inventoryManager.OnSelectItem += value;
+            remove => _inventoryManager.OnSelectItem -= value;
+        }
+
+
+        public event Action<float, float> OnWeightChanged
+        {
+            add => _inventoryManager.OnWeightChanged += value;
+            remove => _inventoryManager.OnWeightChanged -= value;
+        }
+
         public bool IsInvincible => _isInvincible;
 
         public float ThrowPower => _throwPower;
@@ -57,6 +77,9 @@ namespace ChristianGamers.Ingame.Player
         public void RegisterSpeedBuff(Func<float, float> func) => _playerController.RegisterSpeedBuff(func);
         public void UnregisterSpeedBuff(Func<float, float> func) => _playerController.UnregisterSpeedBuff(func);
 
+        public void RegisterStrangthBuff(Func<float, float> func) => _inventoryManager.AddStrangthBuff(func);
+        public void UnregisterStrangthBuff(Func<float, float> func) => _inventoryManager.RemoveStrangthBuff(func);
+
         public void Withdrawal()
         {
             ScoreManager scoreManager = ServiceLocator.GetInstance<ScoreManager>();
@@ -81,6 +104,24 @@ namespace ChristianGamers.Ingame.Player
             }
         }
 
+        public void SetActiveInputHandle(bool active)
+        {
+            if (_inputBuffer == null)
+            {
+                Debug.LogWarning("input buffer is null");
+                return;
+            }
+
+            if (active)
+            {
+                RegisterInputActionHandle(_inputBuffer);
+            }
+            else
+            {
+                UnregisterInputActionHandle(_inputBuffer);
+            }
+        }
+
         [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
         private float _moveSpeed = 10;
@@ -96,7 +137,9 @@ namespace ChristianGamers.Ingame.Player
         private Vector3 _collectOffset = new Vector3(0, 0.5f, 0);
 
         [SerializeField, Tooltip("インベントリの最大重量")]
-        private float _maxWeight = 10.0f;
+        private float _strangth = 10.0f;
+        [SerializeField, Tooltip("インベントリの最大所持数")]
+        private int _maxItemCount = 7;
 
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
@@ -134,7 +177,7 @@ namespace ChristianGamers.Ingame.Player
             }
 
             _playerItemCollecter = new(transform);
-            _inventoryManager = new(_maxWeight);
+            _inventoryManager = new(_strangth, _maxItemCount);
 
             _isMoveActionActive = true;
         }
@@ -149,7 +192,6 @@ namespace ChristianGamers.Ingame.Player
             }
 
             Cursor.lockState = CursorLockMode.Locked;
-            RegisterInputActionHandle(_inputBuffer);
         }
 
         private void Update()
@@ -197,12 +239,7 @@ namespace ChristianGamers.Ingame.Player
 
         private void HandleUse(InputAction.CallbackContext context)
         {
-            ItemBase item = _inventoryManager.GetSelectedItem();
-
-            if (item is IUseble usable) //Usableを継承していたら実行
-            {
-                _inventoryManager.UseSelectedItem();
-            }
+            _inventoryManager.UseSelectedItem(this);
         }
 
         private void HandleSelect(InputAction.CallbackContext context)
@@ -233,6 +270,30 @@ namespace ChristianGamers.Ingame.Player
             inputBuffer.UseAction.started += HandleUse;
 
             inputBuffer.SelectAction.performed += HandleSelect;
+        }
+
+        private void UnregisterInputActionHandle(InputBuffer inputBuffer)
+        {
+            if (inputBuffer == null)
+            {
+                Debug.LogError("InputBuffer is null.");
+                return;
+            }
+
+            inputBuffer.MoveAction.performed -= HandleMove;
+            inputBuffer.MoveAction.canceled -= HandleMove;
+
+            inputBuffer.LookAction.performed -= HandleLook;
+            inputBuffer.LookAction.canceled -= HandleLook;
+
+            inputBuffer.CollectAction.started -= HandleCollect;
+
+            inputBuffer.UseAction.started -= HandleUse;
+
+            inputBuffer.SelectAction.performed -= HandleSelect;
+
+            _moveDir = Vector3.zero;
+            _lookDir = Vector2.zero;
         }
 
         #region

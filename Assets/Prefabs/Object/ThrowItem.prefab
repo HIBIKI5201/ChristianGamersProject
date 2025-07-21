@@ -150,7 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0878284bc00b4348a8aefea55e9ecd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPivot: {fileID: 3223046890695737694}
+  _iconSprite: {fileID: 7482667652216324306, guid: b894166dbb94b9f4a8c263697a822815, type: 3}
+  _weight: 1
 --- !u!1 &5422490618923544430
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using ChristianGamers.Ingame.Player;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Item
@@ -10,6 +11,6 @@ namespace ChristianGamers.Ingame.Item
         /// <summary>
         /// 使用時の動き
         /// </summary>
-        public void Use();
+        public void Use(PlayerManager player);
     }
 }

@@ -1,3 +1,4 @@
+using ChristianGamers.Ingame.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,17 @@ namespace ChristianGamers.Ingame.Item
     [Serializable]
     public class InventoryManager
     {
-        public event Action<float> OnWeightChanged;
+        public event Action<IReadOnlyList<ItemBase>> OnItemsChanged;
+        public event Action<float, float> OnWeightChanged;
+        public event Action<int> OnSelectItem;
 
-        public InventoryManager(float maxWeight)
+        public InventoryManager(float strangth, int maxItemCount)
         {
-            _maxWeight = maxWeight;
-        }
+            _strangth = strangth;
+            _maxItemCount = maxItemCount;
 
-        private List<ItemBase> _items = new List<ItemBase>();
-        private int _itemIndex = 0;
-        private float _maxWeight;
+            _inventory = new ItemBase[_maxItemCount];
+        }
 
         /// <summary>
         ///     インベントリのリストにアイテムを追加する
@@ -28,13 +30,30 @@ namespace ChristianGamers.Ingame.Item
         /// <param name="item"取得したアイテム></param>
         public bool AddItem(ItemBase item)
         {
-            float sumWeight = _items.Sum(i => i.Weight) + item.Weight;
+            ItemBase[] items = _inventory.Where(x => x != null).ToArray();
+
+            //アイテムの所持数が最大値以上なら追加不可
+            if (_maxItemCount <= items.Length) return false;
+
+            float sumWeight = SumInventoryWeight() + item.Weight;
+            float strangth = GetFinalStrangth();
 
             // アイテムの重さが最大重量を超える場合は追加しない
-            if (_maxWeight < sumWeight) return false;
+            if (strangth < sumWeight) return false;
 
-            _items.Add(item);
-            OnWeightChanged?.Invoke(sumWeight);
+            //空いている場所にアイテムを追加
+            int index = Array.IndexOf(_inventory, null);
+            _inventory[index] = item;
+            OnItemsChanged?.Invoke(_inventory);
+
+            OnWeightChanged?.Invoke(strangth, sumWeight);
+
+            //インベントリに一つ目の物が入ったら
+            if (_inventory.Count(e => e != null) == 1) 
+            {
+                _selectIndex = index;
+            }
+
             return true;
         }
 
@@ -44,7 +63,15 @@ namespace ChristianGamers.Ingame.Item
         /// <param name="item"></param>
         public void RemoveItem(ItemBase item)
         {
-            _items.Remove(item);
+            //アイテムをリストから削除
+            int index = Array.IndexOf(_inventory, item);
+            _inventory[index] = null;
+            OnItemsChanged?.Invoke(_inventory);
+            _selectIndex = FindNearItemIndex(_selectIndex);
+            OnSelectItem?.Invoke(_selectIndex);
+
+            //現在の合計値をイベント発行する
+            OnWeightChanged?.Invoke(GetFinalStrangth(), SumInventoryWeight());
         }
 
         /// <summary>
@@ -52,33 +79,28 @@ namespace ChristianGamers.Ingame.Item
         /// </summary>
         public void SelectItem(float axis)
         {
-            if (_items.Count == 0) return;
+            if (_inventory.Length <= 1) return; //一つ以下なら選択できない
 
             int value = (int)Mathf.Sign(axis);
-            _itemIndex = (_itemIndex + _items.Count + value) % _items.Count;
+            _selectIndex = GetNextItemIndex(_selectIndex, (int)axis);
+            OnSelectItem?.Invoke(_selectIndex);
 
-            Debug.Log($"index : {_itemIndex}");
+            Debug.Log($"index : {_selectIndex}");
         }
 
-        public void UseSelectedItem()
+        public void UseSelectedItem(PlayerManager player)
         {
-            if (_items.Count == 0)
+            if (_inventory.Length <= 0)
             {
                 Debug.LogWarning("No items to use.");
                 return;
             }
+
             ItemBase selectedItem = GetSelectedItem();
             if (selectedItem is IUseble usebleItem)
             {
-                usebleItem.Use();
+                usebleItem.Use(player);
                 RemoveItem(selectedItem);
-
-                //アイテム総数が減っているのでインデックスを減らす
-                if (_itemIndex != 0) _itemIndex--;
-            }
-            else
-            {
-                Debug.LogWarning("Selected item is not usable.");
             }
         }
 
@@ -87,16 +109,109 @@ namespace ChristianGamers.Ingame.Item
         /// </summary>
         /// <returns></returns>
         public ItemBase GetSelectedItem() =>
-            0 < _items.Count ? _items[_itemIndex] : null;
+            (0 < _inventory.Length && 0 <= _selectIndex) ? _inventory[_selectIndex] : null;
 
+        /// <summary>
+        ///     全ての回収可能なアイテムを返す
+        /// </summary>
+        /// <returns></returns>
         public IWithdrawable[] GetWithdrawalItems()
         {
-            if (_items.Count == 0) return Array.Empty<IWithdrawable>();
+            if (_inventory.Length <= 0) return Array.Empty<IWithdrawable>();
 
-            return _items
+            return _inventory
                 .Select(item => item as IWithdrawable)
                 .Where(item => item != null)
                 .ToArray();
         }
+
+        public void AddStrangthBuff(Func<float, float> buff)
+        {
+            _weightBuff.Add(buff);
+            OnWeightChanged?.Invoke(GetFinalStrangth(), SumInventoryWeight());
+        }
+        public void RemoveStrangthBuff(Func<float, float> buff)
+        {
+            RemoveStrangthBuff(buff);
+            OnWeightChanged?.Invoke(GetFinalStrangth(), SumInventoryWeight());
+        }
+
+        private ItemBase[] _inventory;
+        private int _selectIndex = 0;
+        private float _strangth;
+        private int _maxItemCount;
+        private List<Func<float, float>> _weightBuff = new();
+
+        /// <summary>
+        ///     最終的な力の量を返す
+        /// </summary>
+        /// <returns></returns>
+        private float GetFinalStrangth()
+        {
+            float maxStrangth = _strangth;
+
+            //バフを適用
+            foreach (var buff in _weightBuff)
+            {
+                if (buff != null) continue;
+                maxStrangth = buff.Invoke(maxStrangth);
+            }
+            return maxStrangth;
+        }
+
+        /// <summary>
+        ///     インデックスに近いアイテムの位置を返す
+        ///     同じ距離なら右側を優先する
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <returns></returns>
+        private int FindNearItemIndex(int origin)
+        {
+            //左右に探索する
+            int rightIndex = GetNextItemIndex(origin, 1);
+            int leftIndex = GetNextItemIndex(origin, -1);
+
+            //探索結果が該当なしなら終了
+            if (rightIndex < 0 || leftIndex < 0)
+            {
+                return -1;
+            }
+
+            //近い方を返す
+            return (Mathf.Abs(origin - rightIndex) <= Mathf.Abs(origin - leftIndex))
+                ? rightIndex : leftIndex;
+        }
+
+        /// <summary>
+        ///     方向の最も近いアイテムのインデックスを返す
+        ///     見つからなければ元のインデックスを返す
+        ///     ただし元のインデックスもnullなら-1を返す
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        private int GetNextItemIndex(int origin, int dir)
+        {
+            dir = (int)Mathf.Sign(dir);
+
+            for (int i = 1; i < _inventory.Length; i++)//自分を除くので1から開始
+            {
+                int index = origin + i * dir;
+                index = (index + _inventory.Length) % _inventory.Length;
+
+                if (_inventory[index] != null) return index;
+            }
+
+            //オリジンがnullじゃないならoriginを返す
+            return (0 <= origin && _inventory[origin] != null)
+                ? origin : -1;
+        }
+
+        /// <summary>
+        ///     インベントリ内の合計重量を返す
+        /// </summary>
+        /// <returns></returns>
+        private float SumInventoryWeight() =>
+            _inventory.Sum(i => i?.Weight ?? 0);
     }
 }
