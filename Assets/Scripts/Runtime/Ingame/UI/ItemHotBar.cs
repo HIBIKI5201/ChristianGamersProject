@@ -57,13 +57,10 @@ namespace ChristianGamers
             if (_slots == null || _slots.Length <= index) return;
 
             Image lastSlot = _slots[_lastIndex];
-            Image nextSlot = _slots[index];
+
 
             if (!lastSlot.transform.GetChild(0)
                     .TryGetComponent(out Image lastChild))
-                return;
-            if (!nextSlot.transform.GetChild(0)
-                   .TryGetComponent(out Image nextChild))
                 return;
 
             lastChild.transform.DOScale(1, 0.2f);
@@ -71,7 +68,12 @@ namespace ChristianGamers
 
             if (0 <= index) //範囲外でなければ
             {
-                nextChild.transform.DOScale(1.1f, 0.3f);
+                Image nextSlot = _slots[index];
+                if (!nextSlot.transform.GetChild(0)
+                        .TryGetComponent(out Image nextChild))
+                    return;
+
+                    nextChild.transform.DOScale(1.1f, 0.3f);
                 nextSlot.sprite = _selectedSlotSprite;
 
                 _lastIndex = index;
