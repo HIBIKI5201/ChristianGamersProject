@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 732174612063647656}
   - component: {fileID: -4994459423062273464}
   - component: {fileID: 2746007795415559096}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ThrowItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,8 +151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _iconSprite: {fileID: 7482667652216324306, guid: b894166dbb94b9f4a8c263697a822815, type: 3}
-  _weight: 1
-  _collectedSE: {fileID: 0}
+  _weight: 3
+  _collectedSE: {fileID: 8300000, guid: e45b75a32f2326d4088ce4b03412707a, type: 3}
+  _withdrawScore: 10
   _breakableVelocityThreshold: 2
   _duration: 1
 --- !u!1 &5422490618923544430
@@ -164,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3223046890695737694}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
