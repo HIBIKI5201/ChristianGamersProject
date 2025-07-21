@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   _moveSpeed: 10
-  _rotationSpeed: {x: 10, y: 10}
-  _collectRange: 2
+  _rotationSpeed: {x: 300, y: 100}
+  _collectRange: 3
   _angleThreshold: 45
-  _collectOffset: {x: 0, y: 0.5, z: 0}
+  _collectOffset: {x: 0, y: 1.25, z: 0}
   _strangth: 10
   _maxItemCount: 7
-  _throwPower: 10
+  _throwPower: 20
