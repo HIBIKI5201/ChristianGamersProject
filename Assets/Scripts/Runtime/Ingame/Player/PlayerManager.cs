@@ -141,6 +141,9 @@ namespace ChristianGamers.Ingame.Player
         [SerializeField, Tooltip("足音のオーディオソース")]
         private AudioSource _footStepAudio;
 
+        [SerializeField]
+        private Material _highlightMaterial;
+
         private Rigidbody _rigidbody;
         private InputBuffer _inputBuffer;
 
@@ -157,6 +160,7 @@ namespace ChristianGamers.Ingame.Player
         private int _groundCount;
 
         private Func<float, float> WeightDebuff;
+        private ItemBase _lastHighlightItem;
 
         private void Awake()
         {
@@ -200,6 +204,8 @@ namespace ChristianGamers.Ingame.Player
         private void Update()
         {
             _playerController.RotateYaw(_lookDir, _playerData.RotationSpeed.x);
+
+            ItemHighlight();
         }
 
         private void FixedUpdate()
@@ -336,6 +342,45 @@ namespace ChristianGamers.Ingame.Player
 
             _moveDir = Vector3.zero;
             _lookDir = Vector2.zero;
+        }
+
+        private void ItemHighlight()
+        {
+            ItemBase item = _playerItemCollecter.SearchItem(
+                _playerData.CollectRange,
+                _playerData.AngleThreshold,
+                _playerData.CollectOffset);
+            if (item != null)
+            {
+                if (item == _lastHighlightItem) return; //前回と同じなら処理しない
+
+                //対象をハイライトする
+                foreach (MeshRenderer renderer in item.GetComponentsInChildren<MeshRenderer>())
+                {
+                    _playerItemCollecter.AddMaterial(renderer, _highlightMaterial);
+                }
+
+                if (_lastHighlightItem != null)
+                {
+                    RemoveHighlight();
+                }
+
+                _lastHighlightItem = item;
+            }
+            else
+            {
+                RemoveHighlight();
+            }
+
+            void RemoveHighlight()
+            {
+                //ハイライト中のアイテムを解除
+                foreach (MeshRenderer renderer in _lastHighlightItem.GetComponentsInChildren<MeshRenderer>())
+                {
+                    _playerItemCollecter.RemoveLastMaterial(renderer, _highlightMaterial);
+                }
+            }
+
         }
 
         private bool IsGroundLayer(LayerMask layerMask) =>

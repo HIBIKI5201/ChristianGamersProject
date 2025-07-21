@@ -2,6 +2,7 @@
 using ChristianGamers.Ingame.Item;
 using ChristianGamers.Utility;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ChristianGamers.Ingame.Player
@@ -56,6 +57,27 @@ namespace ChristianGamers.Ingame.Player
         }
 
         private Transform _self;
+
+        public void AddMaterial(MeshRenderer renderer, Material newMaterial)
+        {
+            if (renderer == null) return;
+
+            List<Material> mats = new List<Material>(renderer.materials);
+            mats.Add(newMaterial); // マテリアルを追加
+            renderer.materials = mats.ToArray(); // 再設定
+        }
+
+        public void RemoveLastMaterial(MeshRenderer renderer, Material newMaterial)
+        {
+            if (renderer == null) return;
+
+            List<Material> mats = new List<Material>(renderer.materials);
+            if (mats.Count > 1) // 少なくとも1つは必要なので注意
+            {
+                mats.RemoveAt(mats.Count - 1);
+                renderer.materials = mats.ToArray();
+            }
+        }
 
         #region Debug
         public static void DrawGizmos(Transform self, float collectRange, float angleThreshold, Vector3 offset = new())
