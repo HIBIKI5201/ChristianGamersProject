@@ -1,11 +1,9 @@
-using ChristianGamers.Ingame.Player;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ChristianGamers
 {
-    [CreateAssetMenu(fileName = nameof(PlayerData), menuName = nameof(PlayerData))]
+    [CreateAssetMenu(fileName = nameof(PlayerData), menuName = "GameData/" + nameof(PlayerData))]
     public class PlayerData : ScriptableObject
     {
         public float MoveSpeed => _moveSpeed;
