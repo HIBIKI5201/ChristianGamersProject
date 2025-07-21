@@ -12,6 +12,8 @@ namespace ChristianGamers
             {
                 RouteData data = _routeData[i];
             }
+
+            return SceneListEnum.None;
         }
 
         private void OnEnable()
