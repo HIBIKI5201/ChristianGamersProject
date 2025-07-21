@@ -39,6 +39,8 @@ namespace ChristianGamers.Ingame.Item
             catch (OperationCanceledException) { return; }
 
             player.UnregisterStrangthBuff(StrangthBuff);
+
+            Destroy(gameObject);
         }
 
         private float StrangthBuff(float value) => value * _strangthUpScale;

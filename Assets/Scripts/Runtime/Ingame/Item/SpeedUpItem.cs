@@ -39,6 +39,8 @@ namespace ChristianGamers
             catch (OperationCanceledException) { return; }
 
             player.UnregisterSpeedBuff(SpeedUpBuff);
+
+            Destroy(gameObject);
         }
 
         private float SpeedUpBuff(float value) => value * _speedUpScale;
