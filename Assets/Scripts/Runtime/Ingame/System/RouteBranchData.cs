@@ -3,17 +3,22 @@ using UnityEngine;
 
 namespace ChristianGamers
 {
-    [CreateAssetMenu(fileName = nameof(RouteBranchData), menuName = nameof(RouteBranchData))]
-    public class RouteBranchData : MonoBehaviour
+    [CreateAssetMenu(fileName = nameof(RouteBranchData), menuName = "GameData/" +  nameof(RouteBranchData))]
+    public class RouteBranchData : ScriptableObject
     {
         public SceneListEnum GetRoute(int score)
         {
-            for (int i = _routeData.Length; 0 <= i; i--)
+            for (int i = _routeData.Length - 1; 0 <= i; i--)
             {
                 RouteData data = _routeData[i];
+                if (data.RequireScore <= score)
+                {
+                    return data.TargetScene;
+                }
             }
 
-            return SceneListEnum.None;
+            Debug.LogError($"Score {score}の条件を満たすルートが存在しません");
+            return SceneListEnum.Title;
         }
 
         private void OnEnable()

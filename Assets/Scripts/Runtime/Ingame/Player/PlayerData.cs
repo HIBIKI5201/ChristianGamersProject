@@ -1,11 +1,9 @@
-using ChristianGamers.Ingame.Player;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ChristianGamers
 {
-    [CreateAssetMenu(fileName = nameof(PlayerData), menuName = nameof(PlayerData))]
+    [CreateAssetMenu(fileName = nameof(PlayerData), menuName = "GameData/" + nameof(PlayerData))]
     public class PlayerData : ScriptableObject
     {
         public float MoveSpeed => _moveSpeed;
@@ -16,7 +14,6 @@ namespace ChristianGamers
         public float Strangth => _strangth;
         public int MaxItemCount => _maxItemCount;
         public float ThrowPower => _throwPower;
-        public WeightDebuffData[] WeightDebuffDatas => _weightDebuffDatas;
 
         /// <summary>
         ///     与えられた重量に対して一番大きいデバフを探す
@@ -26,12 +23,15 @@ namespace ChristianGamers
         /// <returns></returns>
         public float GetWeightDebuff(float weight, float strangth)
         {
+            if (_weightDebuffDatas == null || _weightDebuffDatas.Length == 0)
+                return 1;
+
             //一番大きいデバフを探す
-            for (int i = _weightDebuffDatas.Length; 0 <= i; i--)
+            for (int i = _weightDebuffDatas.Length - 1; 0 <= i; i--)
             {
                 WeightDebuffData data = _weightDebuffDatas[i];
 
-                if (data.WeightThreshold < weight)
+                if (data.WeightThreshold < weight / strangth)
                 {
                     return _weightDebuffDatas[i].DebuffScale;
                 }
@@ -39,6 +39,12 @@ namespace ChristianGamers
 
             //無ければ１を返す
             return 1;
+        }
+
+        private void OnEnable()
+        {
+            //閾値の量に応じてソートする
+            Array.Sort(_weightDebuffDatas, (a, b) => -a.WeightThreshold.CompareTo(b.WeightThreshold));
         }
 
         [Header("移動系設定")]
@@ -65,14 +71,8 @@ namespace ChristianGamers
         [SerializeField, Tooltip("重量デバフ")]
         private WeightDebuffData[] _weightDebuffDatas;
 
-        private void OnValidate()
-        {
-            //閾値の量に応じてソートする
-            Array.Sort(_weightDebuffDatas, (a, b) => -a.WeightThreshold.CompareTo(b.WeightThreshold));
-        }
-
         [Serializable]
-        public struct WeightDebuffData
+        private struct WeightDebuffData
         {
             public float WeightThreshold => _weightThreshold;
             public float DebuffScale => _debuffScale;

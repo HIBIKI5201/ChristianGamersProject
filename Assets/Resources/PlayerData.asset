@@ -21,7 +21,7 @@ MonoBehaviour:
   _maxItemCount: 7
   _throwPower: 20
   _weightDebuffDatas:
-  - _weightThreshold: 0
-    _debuffScale: 0
-  - _weightThreshold: 0
-    _debuffScale: 0
+  - _weightThreshold: 0.5
+    _debuffScale: 0.8
+  - _weightThreshold: 1
+    _debuffScale: 0.5
