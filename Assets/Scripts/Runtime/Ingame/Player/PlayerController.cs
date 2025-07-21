@@ -10,11 +10,16 @@ namespace ChristianGamers.Ingame.Player
     [Serializable]
     public class PlayerController
     {
-        public PlayerController(Transform self, Rigidbody rigidbody, PlayerAnimationController animator)
+        public PlayerController(
+            Transform self,
+            Rigidbody rigidbody,
+            PlayerAnimationController animator,
+            AudioSource footStepAudio)
         {
             _self = self;
             _rigidbody = rigidbody;
             _animator = animator;
+            _footStepAudio = footStepAudio;
         }
 
         /// <summary>
@@ -32,7 +37,7 @@ namespace ChristianGamers.Ingame.Player
             Vector3 moveDir = (right * dir.x + forward.normalized * dir.z).normalized;
 
             //バフによる影響を計算
-            foreach(Func<float, float> buff in _speedBuffs)
+            foreach (Func<float, float> buff in _speedBuffs)
             {
                 speed = buff(speed);
             }
@@ -41,6 +46,19 @@ namespace ChristianGamers.Ingame.Player
                 new Vector3(moveDir.x * speed, _rigidbody.linearVelocity.y, moveDir.z * speed);
 
             _animator?.SetMoveDirParam(new Vector2(dir.x, dir.z));
+
+            if (!Mathf.Approximately(dir.magnitude, 0))
+            {
+                //移動してたら音を出し始める
+                if (!_footStepAudio.isPlaying)
+                    _footStepAudio.Play();
+            }
+            else
+            {
+                //移動停止したら音を止める
+                if (_footStepAudio.isPlaying)
+                    _footStepAudio.Stop();
+            }
         }
 
         /// <summary>
@@ -59,6 +77,7 @@ namespace ChristianGamers.Ingame.Player
 
         private Transform _self;
         private Rigidbody _rigidbody;
+        private AudioSource _footStepAudio;
         private PlayerAnimationController _animator;
 
         private List<Func<float, float>> _speedBuffs = new();

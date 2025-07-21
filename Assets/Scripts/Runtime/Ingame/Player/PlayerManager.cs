@@ -130,7 +130,7 @@ namespace ChristianGamers.Ingame.Player
         private Transform _muzzlePivot;
 
         [SerializeField, Tooltip("足音のオーディオソース")]
-        private AudioSource _footAudio;
+        private AudioSource _footStepAudio;
 
         private Rigidbody _rigidbody;
         private InputBuffer _inputBuffer;
@@ -153,7 +153,7 @@ namespace ChristianGamers.Ingame.Player
                 Debug.LogError("Rigidbody component is required on this GameObject.");
             }
 
-            if ( _footAudio == null )
+            if ( _footStepAudio == null )
             {
                 Debug.LogWarning("foot audio is null");
             }
@@ -164,7 +164,7 @@ namespace ChristianGamers.Ingame.Player
 
             if (_rigidbody != null)
             {
-                _playerController = new(transform, _rigidbody, _animController);
+                _playerController = new(transform, _rigidbody, _animController, _footStepAudio);
             }
 
             _playerItemCollecter = new(transform);
