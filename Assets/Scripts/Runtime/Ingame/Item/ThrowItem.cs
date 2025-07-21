@@ -7,8 +7,12 @@ namespace ChristianGamers.Ingame.Item
     /// 投擲アイテム
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
-    public class ThrowItem : ItemBase, IUseble
+    public class ThrowItem : ItemBase, IUseble, IWithdrawable
     {
+        public int WithdrawScore => _withdrawScore;
+        [SerializeField]
+        private int _withdrawScore;
+
         [SerializeField]
         private float _breakableVelocityThreshold = 2;
 
@@ -17,6 +21,8 @@ namespace ChristianGamers.Ingame.Item
 
         private bool _isUsing;
         private float _timer;
+
+        
 
         public bool Use(PlayerManager player)
         {
