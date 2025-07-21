@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aeb54d6ff104674294d47ec61df2039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _iconSprite: {fileID: -2413806693520163455, guid: aad141166d9b4524f9189ba640c0dd50, type: 3}
+  _iconSprite: {fileID: 21300000, guid: 2131d9f6cf78a94419c12dd92e78874f, type: 3}
   _weight: 1
   _collectedSE: {fileID: 8300000, guid: e45b75a32f2326d4088ce4b03412707a, type: 3}
   _speedUpScale: 2
