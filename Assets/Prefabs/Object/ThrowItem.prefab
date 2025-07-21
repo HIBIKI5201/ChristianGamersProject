@@ -152,6 +152,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _iconSprite: {fileID: 7482667652216324306, guid: b894166dbb94b9f4a8c263697a822815, type: 3}
   _weight: 1
+  _cllectedSE: {fileID: 8300000, guid: e45b75a32f2326d4088ce4b03412707a, type: 3}
+  _breakableVelocityThreshold: 2
+  _duration: 1
 --- !u!1 &5422490618923544430
 GameObject:
   m_ObjectHideFlags: 0

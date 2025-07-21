@@ -50,8 +50,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _iconSprite: {fileID: -2413806693520163455, guid: aad141166d9b4524f9189ba640c0dd50, type: 3}
   _weight: 1
+  _cllectedSE: {fileID: 8300000, guid: e45b75a32f2326d4088ce4b03412707a, type: 3}
   _speedUpScale: 2
   _duration: 5
+  _cooldown: 1
 --- !u!33 &4733119616065716757
 MeshFilter:
   m_ObjectHideFlags: 0

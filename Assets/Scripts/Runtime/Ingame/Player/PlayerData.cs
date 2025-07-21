@@ -1,5 +1,4 @@
-using ChristianGamers.Ingame.Item;
-using UnityEditor.ShaderGraph.Internal;
+using System;
 using UnityEngine;
 
 namespace ChristianGamers
@@ -14,7 +13,8 @@ namespace ChristianGamers
         public Vector3 CollectOffset => _collectOffset;
         public float Strangth => _strangth;
         public int MaxItemCount => _maxItemCount;
-        public float ThrowPower => _throwPower; 
+        public float ThrowPower => _throwPower;
+        public WeightDebuffData[] WeightDebuff => _weightDebuff;
 
         [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
@@ -37,5 +37,24 @@ namespace ChristianGamers
 
         [SerializeField, Tooltip("投げる力の大きさ")]
         private float _throwPower = 10.0f;
+        [SerializeField, Tooltip("重量デバフ")]
+        private WeightDebuffData[] _weightDebuff;
+
+        private void OnValidate()
+        {
+            Array.Sort(_weightDebuff, (a, b) => a.WeightThreshold.CompareTo(b.WeightThreshold));
+        }
+
+        [Serializable]
+        public struct WeightDebuffData
+        {
+            public float WeightThreshold => _weightThreshold;
+            public float DebuffScale => _debuffScale;
+
+            [SerializeField]
+            private float _weightThreshold;
+            [SerializeField]
+            private float _debuffScale;
+        }
     }
 }
