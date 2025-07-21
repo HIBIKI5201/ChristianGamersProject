@@ -2,6 +2,8 @@ using UnityEngine;
 using SymphonyFrameWork.System;
 using ChristianGamers.System.Score;
 using UnityEngine.UI;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace ChristianGamers
 {
@@ -13,8 +15,8 @@ namespace ChristianGamers
 
         void Start()
         {
-            var scores = SaveDataSystem<ScoreData>.Data.Score;
-            _texts = new Text[scores.Count];
+            var scores = ScoreData.Score;
+            _texts = new Text[ScoreData.MAX_SCORES];
 
             for (int i = 0; i < _texts.Length; i++)
             {
@@ -25,15 +27,16 @@ namespace ChristianGamers
 
         public void RankingView()
         {
-            var scores = SaveDataSystem<ScoreData>.Data.Score;
+            var scores = ScoreData.Score;
+            ;
 
             for (int i = 0; i < _texts.Length; i++)
             {
-                _texts[i].text = $"{i + 1}位 : {scores[i]} 点";
+                _texts[i].text = $"{i + 1}位 : {(i < scores.Count ? scores[i] : 0)} 点";
             }
 
             //自分のスコアを表示する処理
-            int myScore = SaveDataSystem<ScoreData>.Data.LastScore;
+            int myScore = ScoreData.LastScore;
             myScore.ToString();
 
             if (_lastScoreText != null)

@@ -9,10 +9,11 @@ namespace ChristianGamers.System.Score
     /// </summary>
     public class ScoreData
     {
-        public IReadOnlyList<int> Score => _scores;
-        public int LastScore => _lastScore;
+        public const int MAX_SCORES = 5;
+        public static IReadOnlyList<int> Score => _scores;
+        public static int LastScore => _lastScore;
 
-        public void AddScore(int score)
+        public static void AddScore(int score)
         {
             _scores.Add(score);
             _scores = _scores.OrderBy(x => x).Take(MAX_SCORES).ToList(); // 降順にソート
@@ -21,9 +22,8 @@ namespace ChristianGamers.System.Score
             Debug.Log($"[ScoreData] スコア追加: {score}（現在のスコア数: {_scores.Count}）");
         }
 
-        private const int MAX_SCORES = 5;
 
-        private List<int> _scores = new();
-        private int _lastScore;
+        private static List<int> _scores = new();
+        private static int _lastScore;
     }
 }
