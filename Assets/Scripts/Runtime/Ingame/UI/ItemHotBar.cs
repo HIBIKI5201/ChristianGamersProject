@@ -2,7 +2,9 @@ using ChristianGamers.Ingame.Item;
 using ChristianGamers.Ingame.Player;
 using DG.Tweening;
 using SymphonyFrameWork.System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +14,6 @@ namespace ChristianGamers
     {
         [SerializeField]
         private Image[] _slots;
-
-        [SerializeField]
-        private Sprite _normalSlotSprite;
-        [SerializeField]
-        private Sprite _selectedSlotSprite;
 
         private int _lastIndex;
 
@@ -35,19 +32,16 @@ namespace ChristianGamers
             {
                 ItemBase item = list[i];
                 Image slot = _slots[i];
-                if (!slot.transform.GetChild(0)
-                    .TryGetComponent(out Image child))
-                    continue;
 
                 if (item != null)
                 {
-                    child.sprite = item.IconSprite;
-                    child.color = Color.white;
+                    slot.sprite = item.IconSprite;
+                    slot.color = Color.white;
                 }
                 else
                 {
-                    child.sprite = null;
-                    child.color = Color.clear;
+                    slot.sprite = null;
+                    slot.color = Color.clear;
                 }
             }
         }
@@ -55,31 +49,16 @@ namespace ChristianGamers
         private void HandleSelectItem(int index)
         {
             if (_slots == null || _slots.Length <= index) return;
-
-            Image lastSlot = _slots[_lastIndex];
-
-
-            if (!lastSlot.transform.GetChild(0)
-                    .TryGetComponent(out Image lastChild))
-                return;
-
-            lastChild.transform.DOScale(1, 0.2f);
-            lastSlot.sprite = _normalSlotSprite;
+            
+            _slots[_lastIndex].transform.DOScale(1, 0.2f);
 
             if (0 <= index) //範囲外でなければ
             {
-                Image nextSlot = _slots[index];
-                if (!nextSlot.transform.GetChild(0)
-                        .TryGetComponent(out Image nextChild))
-                    return;
-
-                    nextChild.transform.DOScale(1.1f, 0.3f);
-                nextSlot.sprite = _selectedSlotSprite;
-
+                _slots[index].transform.DOScale(1.1f, 0.3f);
                 _lastIndex = index;
             }
         }
-
+        
         /// <summary>
         ///     スロットを初期化する
         /// </summary>
@@ -87,13 +66,8 @@ namespace ChristianGamers
         {
             foreach (Image slot in _slots)
             {
-                if (!slot.transform.GetChild(0)
-                    .TryGetComponent(out Image child))
-                    continue;
-
-                slot.sprite = _normalSlotSprite;
-                child.sprite = null;
-                child.color = Color.clear;
+                slot.sprite = null;
+                slot.color = Color.clear;
             }
         }
     }
