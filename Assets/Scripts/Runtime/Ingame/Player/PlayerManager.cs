@@ -35,8 +35,8 @@ namespace ChristianGamers.Ingame.Player
         }
 
         public bool IsInvincible => _isInvincible;
-
         public float ThrowPower => _playerData.ThrowPower;
+        public bool IsGround => 0 < _groundCount;
         public Transform MuzzlePivot => _muzzlePivot;
 
         /// <summary>
@@ -67,6 +67,12 @@ namespace ChristianGamers.Ingame.Player
             try
             {
                 await Awaitable.WaitForSecondsAsync(StunTime, destroyCancellationToken);
+
+                //着地していなければまだ動けない
+                if (!IsGround)
+                {
+                    await Awaitable.NextFrameAsync(destroyCancellationToken);
+                }
             }
             catch (OperationCanceledException) { }
             finally
@@ -126,11 +132,17 @@ namespace ChristianGamers.Ingame.Player
         [SerializeField]
         private PlayerData _playerData;
 
+        [SerializeField]
+        private LayerMask _groundLayer = ~0;
+
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
 
         [SerializeField, Tooltip("足音のオーディオソース")]
         private AudioSource _footStepAudio;
+
+        [SerializeField]
+        private Material _highlightMaterial;
 
         private Rigidbody _rigidbody;
         private InputBuffer _inputBuffer;
@@ -145,8 +157,10 @@ namespace ChristianGamers.Ingame.Player
 
         private bool _isInvincible;
         private bool _isMoveActionActive;
+        private int _groundCount;
 
         private Func<float, float> WeightDebuff;
+        private ItemBase _lastHighlightItem;
 
         private void Awake()
         {
@@ -190,12 +204,31 @@ namespace ChristianGamers.Ingame.Player
         private void Update()
         {
             _playerController.RotateYaw(_lookDir, _playerData.RotationSpeed.x);
+
+            ItemHighlight();
         }
 
         private void FixedUpdate()
         {
             if (_isMoveActionActive)
                 _playerController.Move(_moveDir, transform.forward, _playerData.MoveSpeed);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            //地面判定のレイヤーなら実行
+            if (IsGroundLayer(collision.gameObject.layer))
+            {
+                _groundCount++;
+            }
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            if (IsGroundLayer(collision.gameObject.layer))
+            {
+                _groundCount--;
+            }
         }
 
         /// <summary>
@@ -310,6 +343,51 @@ namespace ChristianGamers.Ingame.Player
             _moveDir = Vector3.zero;
             _lookDir = Vector2.zero;
         }
+
+        private void ItemHighlight()
+        {
+            ItemBase item = _playerItemCollecter.SearchItem(
+                _playerData.CollectRange,
+                _playerData.AngleThreshold,
+                _playerData.CollectOffset);
+            if (item != null)
+            {
+                if (item == _lastHighlightItem) return; //前回と同じなら処理しない
+
+                //対象をハイライトする
+                foreach (MeshRenderer renderer in item.GetComponentsInChildren<MeshRenderer>())
+                {
+                    _playerItemCollecter.AddMaterial(renderer, _highlightMaterial);
+                }
+
+                if (_lastHighlightItem != null)
+                {
+                    RemoveHighlight();
+                }
+
+                _lastHighlightItem = item;
+            }
+            else
+            {
+                if (_lastHighlightItem != null)
+                {
+                    RemoveHighlight();
+                }
+            }
+
+            void RemoveHighlight()
+            {
+                //ハイライト中のアイテムを解除
+                foreach (MeshRenderer renderer in _lastHighlightItem.GetComponentsInChildren<MeshRenderer>())
+                {
+                    _playerItemCollecter.RemoveLastMaterial(renderer, _highlightMaterial);
+                }
+            }
+
+        }
+
+        private bool IsGroundLayer(LayerMask layerMask) =>
+            (layerMask & 1 << _groundLayer) != 0;
 
         #region
         private void OnDrawGizmos()
