@@ -31,7 +31,7 @@ namespace ChristianGamers
             {
                 WeightDebuffData data = _weightDebuffDatas[i];
 
-                if (data.WeightThreshold < weight)
+                if (data.WeightThreshold < weight / strangth)
                 {
                     return _weightDebuffDatas[i].DebuffScale;
                 }
