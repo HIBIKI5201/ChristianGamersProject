@@ -118,6 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5523809029798293131}
   - component: {fileID: 8678459986933134891}
+  - component: {fileID: -810561847206845946}
   m_Layer: 0
   m_Name: StrangthItem
   m_TagString: Untagged
@@ -158,3 +159,30 @@ MonoBehaviour:
   _strangthUpScale: 1
   _duration: 1
   _cooldown: 1
+--- !u!54 &-810561847206845946
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6237289122446957912}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
