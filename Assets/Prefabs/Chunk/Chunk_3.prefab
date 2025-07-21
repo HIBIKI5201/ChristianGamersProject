@@ -45,8 +45,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnItems:
-  - item: {fileID: 2746007795415559096, guid: 0de78238568c1174eb6dd96505979604, type: 3}
-    spawnWeight: 3
+  - item: {fileID: 8074995536990204124, guid: 104557b0e822dc54cb704e204b28727b, type: 3}
+    spawnWeight: 4
+    offSet: {x: 0, y: 0, z: 0}
+  - item: {fileID: 8678459986933134891, guid: 832d6d64b28c58446a56a499584b4873, type: 3}
+    spawnWeight: 1
+    offSet: {x: 0, y: 0, z: 0}
+  - item: {fileID: 0}
+    spawnWeight: 4
     offSet: {x: 0, y: 0, z: 0}
   - item: {fileID: 0}
     spawnWeight: 4
@@ -805,7 +811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4629933701005688437, guid: 5bf9710944b36e64da8ce92afaa6009c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.49
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 4629933701005688437, guid: 5bf9710944b36e64da8ce92afaa6009c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -867,11 +873,11 @@ MonoBehaviour:
   - item: {fileID: 2746007795415559096, guid: 0de78238568c1174eb6dd96505979604, type: 3}
     spawnWeight: 3
     offSet: {x: 0, y: 0, z: 0}
-  - item: {fileID: 5515810503133928708, guid: 1421bb2904b885a4a9f857cfa1497fec, type: 3}
-    spawnWeight: 1
+  - item: {fileID: 9207066864512163850, guid: 1421bb2904b885a4a9f857cfa1497fec, type: 3}
+    spawnWeight: 2
     offSet: {x: 0, y: 0, z: 0}
-  - item: {fileID: 0}
-    spawnWeight: 3
+  - item: {fileID: 2746007795415559096, guid: 0de78238568c1174eb6dd96505979604, type: 3}
+    spawnWeight: 1
     offSet: {x: 0, y: 0, z: 0}
   _switchingTime: 0.5
 --- !u!1001 &3905070719164444628
