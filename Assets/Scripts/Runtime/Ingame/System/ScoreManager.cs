@@ -12,7 +12,7 @@ namespace ChristianGamers.System.Score
         [Tooltip("スコア変化時のイベント。第一引数が合計値、第二引数が変化量")]
         public event Action<int, int> OnScoreChanged;
 
-        private int _score = 0;
+        public int Score => _score;
 
         /// <summary>
         ///     スコアを加算する
@@ -34,5 +34,7 @@ namespace ChristianGamers.System.Score
             SaveDataSystem<ScoreData>.Data.AddScore(_score);
             SaveDataSystem<ScoreData>.Save();
         }
+
+        private int _score = 0;
     }
 }
