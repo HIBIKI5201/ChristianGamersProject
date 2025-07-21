@@ -3,6 +3,7 @@ using ChristianGamers.System.Score;
 using SymphonyFrameWork.System;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -35,7 +36,7 @@ namespace ChristianGamers.Ingame.Player
 
         public bool IsInvincible => _isInvincible;
 
-        public float ThrowPower => _throwPower;
+        public float ThrowPower => _playerData.ThrowPower;
         public Transform MuzzlePivot => _muzzlePivot;
 
         /// <summary>
@@ -122,29 +123,14 @@ namespace ChristianGamers.Ingame.Player
             }
         }
 
-        [Header("移動系設定")]
-        [SerializeField, Tooltip("移動速度")]
-        private float _moveSpeed = 10;
-        [SerializeField, Tooltip("Y回転速度")]
-        private Vector2 _rotationSpeed = new Vector2(10, 10);
-
-        [Header("アイテム収集系設定")]
-        [SerializeField, Min(0), Tooltip("アイテムを収集する範囲")]
-        private float _collectRange = 2.0f;
-        [SerializeField, Range(0, 360), Tooltip("アイテムを収集するための角度の閾値（度数法）")]
-        private float _angleThreshold = 45.0f;
-        [SerializeField, Tooltip("アイテム収集範囲のオフセット")]
-        private Vector3 _collectOffset = new Vector3(0, 0.5f, 0);
-
-        [SerializeField, Tooltip("インベントリの最大重量")]
-        private float _strangth = 10.0f;
-        [SerializeField, Tooltip("インベントリの最大所持数")]
-        private int _maxItemCount = 7;
+        [SerializeField]
+        private PlayerData _playerData;
 
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
-        [SerializeField, Tooltip("投げる力の大きさ")]
-        private float _throwPower = 10.0f;
+
+        [SerializeField, Tooltip("足音のオーディオソース")]
+        private AudioSource _footAudio;
 
         private Rigidbody _rigidbody;
         private InputBuffer _inputBuffer;
@@ -167,6 +153,11 @@ namespace ChristianGamers.Ingame.Player
                 Debug.LogError("Rigidbody component is required on this GameObject.");
             }
 
+            if ( _footAudio == null )
+            {
+                Debug.LogWarning("foot audio is null");
+            }
+
             Animator animator = GetComponentInChildren<Animator>();
             if (animator)
                 _animController = new(animator);
@@ -177,9 +168,11 @@ namespace ChristianGamers.Ingame.Player
             }
 
             _playerItemCollecter = new(transform);
-            _inventoryManager = new(_strangth, _maxItemCount);
+            _inventoryManager = new(_playerData.Strangth, _playerData.MaxItemCount);
 
             _isMoveActionActive = true;
+
+            _inventoryManager.OnItemsChanged += HandleChangeInventory;
         }
 
         private void Start()
@@ -196,13 +189,13 @@ namespace ChristianGamers.Ingame.Player
 
         private void Update()
         {
-            _playerController.RotateYaw(_lookDir, _rotationSpeed.x);
+            _playerController.RotateYaw(_lookDir, _playerData.RotationSpeed.x);
         }
 
         private void FixedUpdate()
         {
             if (_isMoveActionActive)
-                _playerController.Move(_moveDir, transform.forward, _moveSpeed);
+                _playerController.Move(_moveDir, transform.forward, _playerData.MoveSpeed);
         }
 
         /// <summary>
@@ -230,7 +223,10 @@ namespace ChristianGamers.Ingame.Player
             // 例えば、周囲のアイテムを検出し、収集するロジックを追加する
             Debug.Log("Collect action triggered.");
 
-            ItemBase item = _playerItemCollecter.SearchItem(_collectRange, _angleThreshold, _collectOffset);
+            ItemBase item = _playerItemCollecter.SearchItem(
+                _playerData.CollectRange,
+                _playerData.AngleThreshold,
+                _playerData.CollectOffset);
 
             if (item == null) return;
 
@@ -245,6 +241,12 @@ namespace ChristianGamers.Ingame.Player
         private void HandleSelect(InputAction.CallbackContext context)
         {
             _inventoryManager.SelectItem(context.ReadValue<float>());
+        }
+
+        private void HandleChangeInventory(IReadOnlyList<ItemBase> list)
+        {
+            float sum = list.Sum(e => e?.Weight ?? 0);
+
         }
 
         /// <summary>
@@ -299,7 +301,13 @@ namespace ChristianGamers.Ingame.Player
         #region
         private void OnDrawGizmos()
         {
-            PlayerItemCollecter.DrawGizmos(transform, _collectRange, _angleThreshold, _collectOffset);
+            if (_playerData == null) return;
+
+            PlayerItemCollecter.DrawGizmos(
+                transform,
+                _playerData.CollectRange,
+                _playerData.AngleThreshold, 
+                _playerData.CollectOffset);
         }
         #endregion
     }

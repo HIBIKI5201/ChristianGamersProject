@@ -48,14 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7b60ef40d622840bd2654866475353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 10
-  _rotationSpeed: {x: 300, y: 100}
-  _collectRange: 3
-  _angleThreshold: 45
-  _collectOffset: {x: 0, y: 1.25, z: 0}
-  _maxWeight: 10
+  _playerData: {fileID: 11400000, guid: 4ac824e008882f943b3cf100e77587b3, type: 2}
   _muzzlePivot: {fileID: 1289890451066673811}
-  _throwPower: 20
+  _footAudio: {fileID: 0}
 --- !u!54 &4002867437197724223
 Rigidbody:
   m_ObjectHideFlags: 0
