@@ -339,6 +339,9 @@ MonoBehaviour:
   - item: {fileID: 2746007795415559096, guid: 0de78238568c1174eb6dd96505979604, type: 3}
     spawnWeight: 2
     offSet: {x: 0, y: 0, z: 0}
+  - item: {fileID: 8678459986933134891, guid: 832d6d64b28c58446a56a499584b4873, type: 3}
+    spawnWeight: 2
+    offSet: {x: 0, y: 0, z: 0}
   _switchingTime: 1
 --- !u!1001 &651730732833583426
 PrefabInstance:
