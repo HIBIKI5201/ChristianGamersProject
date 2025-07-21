@@ -66,13 +66,13 @@ namespace ChristianGamers
                    .TryGetComponent(out Image nextChild))
                 return;
 
-            lastSlot.transform.DOScale(1, 0.2f);
+            lastChild.transform.DOScale(1, 0.2f);
             lastSlot.sprite = _normalSlotSprite;
 
             if (0 <= index) //範囲外でなければ
             {
-                nextSlot.transform.DOScale(1.1f, 0.3f);
-                nextChild.sprite = _selectedSlotSprite;
+                nextChild.transform.DOScale(1.1f, 0.3f);
+                nextSlot.sprite = _selectedSlotSprite;
 
                 _lastIndex = index;
             }
@@ -85,8 +85,13 @@ namespace ChristianGamers
         {
             foreach (Image slot in _slots)
             {
-                slot.sprite = null;
-                slot.color = Color.clear;
+                if (!slot.transform.GetChild(0)
+                    .TryGetComponent(out Image child))
+                    continue;
+
+                slot.sprite = _normalSlotSprite;
+                child.sprite = null;
+                child.color = Color.clear;
             }
         }
     }
