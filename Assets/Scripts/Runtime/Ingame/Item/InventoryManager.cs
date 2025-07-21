@@ -139,17 +139,11 @@ namespace ChristianGamers.Ingame.Item
             OnWeightChanged?.Invoke(GetFinalStrangth(), SumInventoryWeight());
         }
 
-        private ItemBase[] _inventory;
-        private int _selectIndex = 0;
-        private float _strangth;
-        private int _maxItemCount;
-        private List<Func<float, float>> _weightBuff = new();
-
         /// <summary>
         ///     最終的な力の量を返す
         /// </summary>
         /// <returns></returns>
-        private float GetFinalStrangth()
+        public float GetFinalStrangth()
         {
             float maxStrangth = _strangth;
 
@@ -161,6 +155,12 @@ namespace ChristianGamers.Ingame.Item
             }
             return maxStrangth;
         }
+
+        private ItemBase[] _inventory;
+        private int _selectIndex = 0;
+        private float _strangth;
+        private int _maxItemCount;
+        private List<Func<float, float>> _weightBuff = new();
 
         /// <summary>
         ///     インデックスに近いアイテムの位置を返す

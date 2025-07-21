@@ -146,6 +146,8 @@ namespace ChristianGamers.Ingame.Player
         private bool _isInvincible;
         private bool _isMoveActionActive;
 
+        private Func<float, float> WeightDebuff;
+
         private void Awake()
         {
             if (!TryGetComponent(out _rigidbody))
@@ -243,8 +245,28 @@ namespace ChristianGamers.Ingame.Player
 
         private void HandleChangeInventory(IReadOnlyList<ItemBase> list)
         {
+            //重量デバフを計算
             float sum = list.Sum(e => e?.Weight ?? 0);
+            float strangth = _inventoryManager.GetFinalStrangth();
 
+            //大きい順で判定していく
+            PlayerData.WeightDebuffData[] debuffDatas = _playerData.WeightDebuffDatas;
+            for (int i = debuffDatas.Length; 0 <= i ; i--)
+            {
+                PlayerData.WeightDebuffData data = debuffDatas[i];
+                
+                if (data.WeightThreshold < sum)
+                {
+                    if (WeightDebuff != null) //既にデバフがある場合はそれを解約
+                    {
+                        _playerController.UnregisterSpeedBuff(WeightDebuff);
+                    }
+
+                    //新たなデバフを追加
+                    WeightDebuff = value => value * data.DebuffScale;
+                    _playerController.RegisterSpeedBuff(WeightDebuff);
+                }
+            }
         }
 
         /// <summary>
