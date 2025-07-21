@@ -135,7 +135,7 @@ namespace ChristianGamers.Ingame.Item
         }
         public void RemoveStrangthBuff(Func<float, float> buff)
         {
-            RemoveStrangthBuff(buff);
+            _weightBuff.Remove(buff);
             OnWeightChanged?.Invoke(GetFinalStrangth(), SumInventoryWeight());
         }
 
