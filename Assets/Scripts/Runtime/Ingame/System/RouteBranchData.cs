@@ -8,7 +8,7 @@ namespace ChristianGamers
     {
         public SceneListEnum GetRoute(int score)
         {
-            for (int i = _routeData.Length; 0 <= i; i--)
+            for (int i = _routeData.Length - 1; 0 <= i; i--)
             {
                 RouteData data = _routeData[i];
                 if (data.RequireScore <= score)
