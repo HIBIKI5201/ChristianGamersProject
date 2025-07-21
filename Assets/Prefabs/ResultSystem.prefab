@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 6246679346786043252}
   - component: {fileID: 8205537560129736182}
   - component: {fileID: 8432399209176696214}
+  - component: {fileID: 1877135603663180009}
   m_Layer: 0
   m_Name: ResultSystem
   m_TagString: Untagged
@@ -170,6 +171,19 @@ MonoBehaviour:
   _rankingText: {fileID: 6404345951942008498}
   _lastText: {fileID: 5805058019428036413}
   _lastScoreText: {fileID: 8758051607243332691}
+--- !u!114 &1877135603663180009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902561436531927021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5edb2c759b6a445a155ee0869995ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _loadTargetScene: 1
 --- !u!1 &6557397957216498827
 GameObject:
   m_ObjectHideFlags: 0
