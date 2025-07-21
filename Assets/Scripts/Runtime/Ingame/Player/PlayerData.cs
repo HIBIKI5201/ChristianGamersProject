@@ -38,7 +38,7 @@ namespace ChristianGamers
             return 1;
         }
 
-        private void OnValidate()
+        private void OnEnable()
         {
             //閾値の量に応じてソートする
             Array.Sort(_weightDebuffDatas, (a, b) => -a.WeightThreshold.CompareTo(b.WeightThreshold));
