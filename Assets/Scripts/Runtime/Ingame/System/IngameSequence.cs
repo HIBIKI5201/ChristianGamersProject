@@ -90,6 +90,8 @@ namespace ChristianGamers.Ingame.Sequence
 
                 index = ++index % clips.Length;
             }
+
+            source.Stop();
             source.loop = true;
         }
     }
