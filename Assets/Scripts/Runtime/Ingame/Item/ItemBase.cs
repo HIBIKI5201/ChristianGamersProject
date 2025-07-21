@@ -1,3 +1,4 @@
+using SymphonyFrameWork.System;
 using System;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ namespace ChristianGamers.Ingame.Item
         private Sprite _iconSprite;
         [SerializeField, Min(0), Tooltip("重さ")]
         private float _weight = 1;
+        [SerializeField]
+        private AudioClip _collectedSE;
 
         /// <summary>
         /// アイテムを取得したことを伝えられる
@@ -31,6 +34,13 @@ namespace ChristianGamers.Ingame.Item
                 // Rigidbodyがある場合は動かないようにする
                 if (TryGetComponent(out Rigidbody rb))
                     rb.isKinematic = true;
+
+                if (_collectedSE != null)
+                {
+                    AudioSource source = AudioManager
+                        .GetAudioSource(AudioGroupTypeEnum.SE.ToString());
+                    source.PlayOneShot(_collectedSE);
+                }
 
                 OnHadGet?.Invoke(); // アイテムを取得したイベントを呼び出す
                 return true;
