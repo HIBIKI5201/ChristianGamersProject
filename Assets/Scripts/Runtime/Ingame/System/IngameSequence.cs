@@ -19,8 +19,6 @@ namespace ChristianGamers.Ingame.Sequence
         private CancellationTokenSource _bgmCancellationTokenSource;
         private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-
             //必要な参照を取得
             IngameTimer timer = ServiceLocator.GetInstance<IngameTimer>();
             PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();

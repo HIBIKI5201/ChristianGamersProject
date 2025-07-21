@@ -1118,15 +1118,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slots:
-  - {fileID: 4717705860154509228}
-  - {fileID: 8130263159187656111}
-  - {fileID: 8359887942140547021}
-  - {fileID: 7871146334285204681}
-  - {fileID: 3074859179862536426}
-  - {fileID: 4333366794335482473}
-  - {fileID: 8925838892059734446}
-  _normalSlotSprite: {fileID: 21300000, guid: 2d77323bf59089644824c94e5b3e9768, type: 3}
-  _selectedSlotSprite: {fileID: 21300000, guid: 2481569a3e3680a4380918c185cc2438, type: 3}
+  - {fileID: 5065735196333583568}
+  - {fileID: 6194090552003018880}
+  - {fileID: 4824799770422873661}
+  - {fileID: 1497030315842535711}
+  - {fileID: 8152340611872599414}
+  - {fileID: 3199466476925604804}
+  - {fileID: 4677378084974456076}
 --- !u!1 &4394096968644717448
 GameObject:
   m_ObjectHideFlags: 0
