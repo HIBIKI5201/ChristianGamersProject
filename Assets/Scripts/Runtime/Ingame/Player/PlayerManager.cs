@@ -249,24 +249,17 @@ namespace ChristianGamers.Ingame.Player
             float sum = list.Sum(e => e?.Weight ?? 0);
             float strangth = _inventoryManager.GetFinalStrangth();
 
-            //大きい順で判定していく
-            PlayerData.WeightDebuffData[] debuffDatas = _playerData.WeightDebuffDatas;
-            for (int i = debuffDatas.Length; 0 <= i ; i--)
-            {
-                PlayerData.WeightDebuffData data = debuffDatas[i];
-                
-                if (data.WeightThreshold < sum)
-                {
-                    if (WeightDebuff != null) //既にデバフがある場合はそれを解約
-                    {
-                        _playerController.UnregisterSpeedBuff(WeightDebuff);
-                    }
+            //一番大きいデバフを返す
+            float debuffScale = _playerData.GetWeightDebuff(sum, strangth);
 
-                    //新たなデバフを追加
-                    WeightDebuff = value => value * data.DebuffScale;
-                    _playerController.RegisterSpeedBuff(WeightDebuff);
-                }
+            if (WeightDebuff != null)
+            {
+                _playerController.UnregisterSpeedBuff(WeightDebuff);
             }
+
+            WeightDebuff = value => value * debuffScale;
+            _playerController.RegisterSpeedBuff(WeightDebuff);
+
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
+using ChristianGamers.Ingame.Player;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ChristianGamers
@@ -15,6 +17,29 @@ namespace ChristianGamers
         public int MaxItemCount => _maxItemCount;
         public float ThrowPower => _throwPower;
         public WeightDebuffData[] WeightDebuffDatas => _weightDebuffDatas;
+
+        /// <summary>
+        ///     与えられた重量に対して一番大きいデバフを探す
+        ///     無ければ１を返す
+        /// </summary>
+        /// <param name="weight"></param>
+        /// <returns></returns>
+        public float GetWeightDebuff(float weight, float strangth)
+        {
+            //一番大きいデバフを探す
+            for (int i = _weightDebuffDatas.Length; 0 <= i; i--)
+            {
+                WeightDebuffData data = _weightDebuffDatas[i];
+
+                if (data.WeightThreshold < weight)
+                {
+                    return _weightDebuffDatas[i].DebuffScale;
+                }
+            }
+
+            //無ければ１を返す
+            return 1;
+        }
 
         [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
