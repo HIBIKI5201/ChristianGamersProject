@@ -50,6 +50,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: 4ac824e008882f943b3cf100e77587b3, type: 2}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
   _muzzlePivot: {fileID: 1289890451066673811}
   _footStepAudio: {fileID: 3772439938603151146}
 --- !u!54 &4002867437197724223
