@@ -9,6 +9,8 @@ namespace ChristianGamers.System.Score
     /// </summary>
     public class ScoreData
     {
+        public IReadOnlyList<int> Score => _scores;
+
         public void AddScore(int score)
         {
             _scores.Add(score);
