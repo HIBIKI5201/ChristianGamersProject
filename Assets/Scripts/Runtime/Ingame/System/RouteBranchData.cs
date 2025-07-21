@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace ChristianGamers
 {
-    [CreateAssetMenu(fileName = nameof(RouteBranchData), menuName = "GameData/" +  nameof(RouteBranchData))]
-    public class RouteBranchData : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(RouteBranchData), menuName = nameof(RouteBranchData))]
+    public class RouteBranchData : MonoBehaviour
     {
         public SceneListEnum GetRoute(int score)
         {
@@ -21,7 +21,7 @@ namespace ChristianGamers
             return SceneListEnum.Title;
         }
 
-        private void OnValidate()
+        private void OnEnable()
         {
             //必要スコアでソートする
             Array.Sort(_routeData, (a,b) => a.RequireScore.CompareTo(b.RequireScore));

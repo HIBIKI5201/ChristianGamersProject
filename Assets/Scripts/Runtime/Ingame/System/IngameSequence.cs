@@ -11,9 +11,6 @@ namespace ChristianGamers.Ingame.Sequence
     public class IngameSequence : MonoBehaviour
     {
         [SerializeField]
-        private RouteBranchData _routeBranchData;
-
-        [SerializeField]
         private PlayableDirector _startTimeLineDirector;
 
         [SerializeField]
