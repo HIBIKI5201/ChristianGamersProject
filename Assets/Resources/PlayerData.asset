@@ -15,13 +15,13 @@ MonoBehaviour:
   _moveSpeed: 10
   _rotationSpeed: {x: 300, y: 100}
   _collectRange: 3
-  _angleThreshold: 45
-  _collectOffset: {x: 0, y: 1.25, z: 0}
+  _angleThreshold: 50
+  _collectOffset: {x: -0, y: 0.8, z: -0.1}
   _strangth: 10
   _maxItemCount: 7
   _throwPower: 20
   _weightDebuffDatas:
-  - _weightThreshold: 0.5
-    _debuffScale: 0.8
   - _weightThreshold: 1
     _debuffScale: 0.5
+  - _weightThreshold: 0.5
+    _debuffScale: 0.8

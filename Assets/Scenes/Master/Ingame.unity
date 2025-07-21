@@ -598,7 +598,7 @@ Light:
   m_GameObject: {fileID: 1173793584}
   m_Enabled: 1
   serializedVersion: 11
-  m_Type: 3
+  m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -662,13 +662,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1173793584}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.6275921, y: -0.2395939, z: 0.24421714, w: 0.69934326}
   m_LocalPosition: {x: 34.6, y: 8.35, z: 21.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 84.172, y: -16.346, z: 23.719}
 --- !u!114 &1173793587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,6 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25abeaaca508db44b92a94ee3ab98660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _routeBranchData: {fileID: 0}
   _startTimeLineDirector: {fileID: 770715783}
   _bgms:
   - {fileID: 8300000, guid: db7b2e2b93f36c94683ba7a56d84ab4f, type: 3}
