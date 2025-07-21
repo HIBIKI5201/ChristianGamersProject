@@ -52,6 +52,7 @@ namespace ChristianGamers.Ingame.Item
             if (_inventory.Count(e => e != null) == 1) 
             {
                 _selectIndex = index;
+                OnSelectItem?.Invoke(index);
             }
 
             return true;
