@@ -35,8 +35,8 @@ namespace ChristianGamers.Ingame.Player
         }
 
         public bool IsInvincible => _isInvincible;
-
         public float ThrowPower => _playerData.ThrowPower;
+        public bool IsGround => 0 < _groundCount;
         public Transform MuzzlePivot => _muzzlePivot;
 
         /// <summary>
@@ -67,6 +67,12 @@ namespace ChristianGamers.Ingame.Player
             try
             {
                 await Awaitable.WaitForSecondsAsync(StunTime, destroyCancellationToken);
+
+                //着地していなければまだ動けない
+                if (!IsGround)
+                {
+                    await Awaitable.NextFrameAsync(destroyCancellationToken);
+                }
             }
             catch (OperationCanceledException) { }
             finally
@@ -126,6 +132,9 @@ namespace ChristianGamers.Ingame.Player
         [SerializeField]
         private PlayerData _playerData;
 
+        [SerializeField]
+        private LayerMask _groundLayer = ~0;
+
         [SerializeField, Tooltip("アイテム投げのマズルの位置を指定するためのピボット")]
         private Transform _muzzlePivot;
 
@@ -145,6 +154,7 @@ namespace ChristianGamers.Ingame.Player
 
         private bool _isInvincible;
         private bool _isMoveActionActive;
+        private int _groundCount;
 
         private Func<float, float> WeightDebuff;
 
@@ -196,6 +206,23 @@ namespace ChristianGamers.Ingame.Player
         {
             if (_isMoveActionActive)
                 _playerController.Move(_moveDir, transform.forward, _playerData.MoveSpeed);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            //地面判定のレイヤーなら実行
+            if (IsGroundLayer(collision.gameObject.layer))
+            {
+                _groundCount++;
+            }
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            if (IsGroundLayer(collision.gameObject.layer))
+            {
+                _groundCount--;
+            }
         }
 
         /// <summary>
@@ -310,6 +337,9 @@ namespace ChristianGamers.Ingame.Player
             _moveDir = Vector3.zero;
             _lookDir = Vector2.zero;
         }
+
+        private bool IsGroundLayer(LayerMask layerMask) =>
+            (layerMask & 1 << _groundLayer) != 0;
 
         #region
         private void OnDrawGizmos()
