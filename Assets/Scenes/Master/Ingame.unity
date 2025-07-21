@@ -722,6 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25abeaaca508db44b92a94ee3ab98660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _routeBranchData: {fileID: 11400000, guid: 2ad93206f0ca6f24f8d04bf84da1b4eb, type: 2}
   _startTimeLineDirector: {fileID: 770715783}
   _bgms:
   - {fileID: 8300000, guid: db7b2e2b93f36c94683ba7a56d84ab4f, type: 3}
