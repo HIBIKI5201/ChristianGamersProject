@@ -12,14 +12,8 @@ namespace ChristianGamers
         public void LoadScene()
         {
             Scene activeScene = SceneManager.GetActiveScene();
-            SymphonyFrameWork.System.SceneLoader.UnloadScene(activeScene.name);
-            SymphonyFrameWork.System.SceneLoader.LoadScene(_loadTargetScene.ToString());
-        }
-
-        public void LoadScene(SceneListEnum scene)
-        {
-            _loadTargetScene = scene;
-            LoadScene();
+            SceneLoader.UnloadScene(activeScene.name);
+            SceneLoader.LoadScene(_loadTargetScene.ToString());
         }
     }
 }

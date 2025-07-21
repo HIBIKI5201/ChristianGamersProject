@@ -14,12 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Master/Result/Result_Success.unity
     guid: 0417cd686e1166540841cc59f0f8bd79
-  - enabled: 1
-    path: Assets/Scenes/Master/Result/Result_Nomal_Succes.unity
-    guid: e31989bb25a6f3544a29bcb2d41b5739
-  - enabled: 1
-    path: Assets/Scenes/Master/Result/Result_ZeroScore_.unity
-    guid: 65c023884842930469188a4968453f76
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 1ee28dafabc16e84cbdc60be6dc88777, type: 2}
     com.unity.dt.app-ui: {fileID: 11400000, guid: 99f9c9493070a9d4c979a8fec7c5a8d3, type: 2}

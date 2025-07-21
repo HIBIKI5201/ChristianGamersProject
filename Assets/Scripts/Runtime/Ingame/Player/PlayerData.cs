@@ -1,9 +1,11 @@
+using ChristianGamers.Ingame.Player;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ChristianGamers
 {
-    [CreateAssetMenu(fileName = nameof(PlayerData), menuName = "GameData/" + nameof(PlayerData))]
+    [CreateAssetMenu(fileName = nameof(PlayerData), menuName = nameof(PlayerData))]
     public class PlayerData : ScriptableObject
     {
         public float MoveSpeed => _moveSpeed;
@@ -23,15 +25,12 @@ namespace ChristianGamers
         /// <returns></returns>
         public float GetWeightDebuff(float weight, float strangth)
         {
-            if (_weightDebuffDatas == null || _weightDebuffDatas.Length == 0)
-                return 1;
-
             //一番大きいデバフを探す
-            for (int i = _weightDebuffDatas.Length - 1; 0 <= i; i--)
+            for (int i = _weightDebuffDatas.Length; 0 <= i; i--)
             {
                 WeightDebuffData data = _weightDebuffDatas[i];
 
-                if (data.WeightThreshold < weight / strangth)
+                if (data.WeightThreshold < weight)
                 {
                     return _weightDebuffDatas[i].DebuffScale;
                 }
@@ -41,7 +40,7 @@ namespace ChristianGamers
             return 1;
         }
 
-        private void OnEnable()
+        private void OnValidate()
         {
             //閾値の量に応じてソートする
             Array.Sort(_weightDebuffDatas, (a, b) => -a.WeightThreshold.CompareTo(b.WeightThreshold));

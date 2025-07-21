@@ -1,5 +1,4 @@
 using ChristianGamers.Ingame.Player;
-using ChristianGamers.System.Score;
 using SymphonyFrameWork.System;
 using System;
 using System.Threading;
@@ -11,9 +10,6 @@ namespace ChristianGamers.Ingame.Sequence
     [DefaultExecutionOrder(1000)]
     public class IngameSequence : MonoBehaviour
     {
-        [SerializeField]
-        private RouteBranchData _routeBranchData;
-
         [SerializeField]
         private PlayableDirector _startTimeLineDirector;
 
@@ -28,7 +24,6 @@ namespace ChristianGamers.Ingame.Sequence
             //必要な参照を取得
             IngameTimer timer = ServiceLocator.GetInstance<IngameTimer>();
             PlayerManager player = ServiceLocator.GetInstance<PlayerManager>();
-            ScoreManager scoreManager = ServiceLocator.GetInstance<ScoreManager>();
 
             //一連のシークエンスのイベントを登録
             _startTimeLineDirector.stopped += d => HandleStart();
@@ -55,14 +50,9 @@ namespace ChristianGamers.Ingame.Sequence
                 timer.Stop();
                 player.SetActiveInputHandle(false);
                 _bgmCancellationTokenSource.Cancel();
-                scoreManager.SaveScores();
 
-                //スコア
-                if (TryGetComponent(out SceneLoad sceneLoad))
-                {
-                    SceneListEnum scene = _routeBranchData.GetRoute(scoreManager.Score);
-                    sceneLoad.LoadScene(scene);
-                }
+                if (TryGetComponent(out SceneLoad component))
+                    component.LoadScene();
             }
         }
 
@@ -90,8 +80,6 @@ namespace ChristianGamers.Ingame.Sequence
 
                 index = ++index % clips.Length;
             }
-
-            source.Stop();
             source.loop = true;
         }
     }

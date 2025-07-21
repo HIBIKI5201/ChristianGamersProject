@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3554450140233320989}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -8462245374359670930, guid: 870ca8d96459e9345b539d208daa523d, type: 3}
 --- !u!23 &2975354274610153785
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -109,8 +109,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.74094105, y: 0.26795325, z: 0.72270477}
+  m_Center: {x: 0.013482869, y: 0.04706247, z: -0.013622269}
 --- !u!54 &-4994459423062273464
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _iconSprite: {fileID: 7482667652216324306, guid: b894166dbb94b9f4a8c263697a822815, type: 3}
   _weight: 1
-  _cllectedSE: {fileID: 8300000, guid: e45b75a32f2326d4088ce4b03412707a, type: 3}
+  _collectedSE: {fileID: 0}
   _breakableVelocityThreshold: 2
   _duration: 1
 --- !u!1 &5422490618923544430

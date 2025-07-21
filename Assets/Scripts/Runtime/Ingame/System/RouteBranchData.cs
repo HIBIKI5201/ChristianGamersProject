@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace ChristianGamers
 {
-    [CreateAssetMenu(fileName = nameof(RouteBranchData), menuName = "GameData/" +  nameof(RouteBranchData))]
-    public class RouteBranchData : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(RouteBranchData), menuName = nameof(RouteBranchData))]
+    public class RouteBranchData : MonoBehaviour
     {
         public SceneListEnum GetRoute(int score)
         {
-            for (int i = _routeData.Length - 1; 0 <= i; i--)
+            for (int i = _routeData.Length; 0 <= i; i--)
             {
                 RouteData data = _routeData[i];
                 if (data.RequireScore <= score)

@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: RouteBranchData
   m_EditorClassIdentifier: 
   _routeData:
-  - _requireScore: 0
-    _targetScene: 5
+  - _requireScore: 200
+    _targetScene: 0
   - _requireScore: 300
-    _targetScene: 4
-  - _requireScore: 500
     _targetScene: 3
