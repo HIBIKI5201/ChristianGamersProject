@@ -16,7 +16,6 @@ namespace ChristianGamers
         public float Strangth => _strangth;
         public int MaxItemCount => _maxItemCount;
         public float ThrowPower => _throwPower;
-        public WeightDebuffData[] WeightDebuffDatas => _weightDebuffDatas;
 
         /// <summary>
         ///     与えられた重量に対して一番大きいデバフを探す
@@ -39,6 +38,12 @@ namespace ChristianGamers
 
             //無ければ１を返す
             return 1;
+        }
+
+        private void OnValidate()
+        {
+            //閾値の量に応じてソートする
+            Array.Sort(_weightDebuffDatas, (a, b) => -a.WeightThreshold.CompareTo(b.WeightThreshold));
         }
 
         [Header("移動系設定")]
@@ -65,14 +70,8 @@ namespace ChristianGamers
         [SerializeField, Tooltip("重量デバフ")]
         private WeightDebuffData[] _weightDebuffDatas;
 
-        private void OnValidate()
-        {
-            //閾値の量に応じてソートする
-            Array.Sort(_weightDebuffDatas, (a, b) => -a.WeightThreshold.CompareTo(b.WeightThreshold));
-        }
-
         [Serializable]
-        public struct WeightDebuffData
+        private struct WeightDebuffData
         {
             public float WeightThreshold => _weightThreshold;
             public float DebuffScale => _debuffScale;

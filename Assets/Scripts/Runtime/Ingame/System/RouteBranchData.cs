@@ -11,9 +11,14 @@ namespace ChristianGamers
             for (int i = _routeData.Length; 0 <= i; i--)
             {
                 RouteData data = _routeData[i];
+                if (data.RequireScore <= score)
+                {
+                    return data.TargetScene;
+                }
             }
 
-            return SceneListEnum.None;
+            Debug.LogError($"Score {score}の条件を満たすルートが存在しません");
+            return SceneListEnum.Title;
         }
 
         private void OnEnable()
