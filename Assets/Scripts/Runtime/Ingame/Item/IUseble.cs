@@ -11,6 +11,6 @@ namespace ChristianGamers.Ingame.Item
         /// <summary>
         /// 使用時の動き
         /// </summary>
-        public void Use(PlayerManager player);
+        public bool Use(PlayerManager player);
     }
 }

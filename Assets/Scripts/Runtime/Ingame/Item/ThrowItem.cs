@@ -9,7 +9,7 @@ namespace ChristianGamers.Ingame.Item
     [RequireComponent(typeof(Rigidbody))]
     public class ThrowItem : ItemBase, IUseble
     {
-        public void Use(PlayerManager player)
+        public bool Use(PlayerManager player)
         {
             Transform muzzle = player.MuzzlePivot;
 
@@ -22,10 +22,14 @@ namespace ChristianGamers.Ingame.Item
                 rb.isKinematic = false; // 動かせるようにする
                 rb.linearVelocity = Vector3.zero; // 既存の速度をリセット
                 rb.AddForce(muzzle.forward * throwForce, ForceMode.Impulse);
+
+                return true;
             }
             else
             {
                 Debug.LogError("Rigidbodyがアタッチされていません。");
+
+                return false;
             }
         }
     }

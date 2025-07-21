@@ -99,8 +99,10 @@ namespace ChristianGamers.Ingame.Item
             ItemBase selectedItem = GetSelectedItem();
             if (selectedItem is IUseble usebleItem)
             {
-                usebleItem.Use(player);
-                RemoveItem(selectedItem);
+                if (usebleItem.Use(player))
+                {
+                    RemoveItem(selectedItem);
+                }
             }
         }
 
