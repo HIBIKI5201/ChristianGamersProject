@@ -369,7 +369,10 @@ namespace ChristianGamers.Ingame.Player
             }
             else
             {
-                RemoveHighlight();
+                if (_lastHighlightItem != null)
+                {
+                    RemoveHighlight();
+                }
             }
 
             void RemoveHighlight()
