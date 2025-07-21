@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resultView: {fileID: 8432399209176696214}
+  _drawer: {fileID: 0}
   _waitTime: 2
 --- !u!114 &8432399209176696214
 MonoBehaviour:
@@ -169,6 +170,83 @@ MonoBehaviour:
   _rankingText: {fileID: 6404345951942008498}
   _lastText: {fileID: 5805058019428036413}
   _lastScoreText: {fileID: 8758051607243332691}
+--- !u!1 &6557397957216498827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7109006537307487317}
+  - component: {fileID: 976724439988031010}
+  - component: {fileID: 2916927948962141453}
+  m_Layer: 5
+  m_Name: RankingText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7109006537307487317
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6557397957216498827}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -107}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 403713826327867809}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -400}
+  m_SizeDelta: {x: 600, y: 600}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &976724439988031010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6557397957216498827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123d642682fcce942b7541723c53a7dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _originalText: {fileID: 1317174339921534079, guid: 1768b0effeff67c4f82bb1c02169e414, type: 3}
+  _lastScoreText: {fileID: 8758051607243332691}
+--- !u!114 &2916927948962141453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6557397957216498827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &7171058773545515686
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +439,6 @@ GameObject:
   - component: {fileID: 403713826327867809}
   - component: {fileID: 568100635230178853}
   - component: {fileID: 6404345951942008498}
-  - component: {fileID: 233026531498235268}
   m_Layer: 0
   m_Name: 'Text '
   m_TagString: Untagged
@@ -380,7 +457,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7109006537307487317}
   m_Father: {fileID: 5098211075305245930}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -430,20 +508,6 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Ranking
---- !u!114 &233026531498235268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8970686396254915060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 123d642682fcce942b7541723c53a7dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _originalText: {fileID: 1317174339921534079, guid: 1768b0effeff67c4f82bb1c02169e414, type: 3}
-  _lastScoreText: {fileID: 8758051607243332691}
 --- !u!1 &9194083383600881519
 GameObject:
   m_ObjectHideFlags: 0

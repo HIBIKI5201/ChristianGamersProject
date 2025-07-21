@@ -419,15 +419,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &809728591 stripped
+--- !u!114 &735457771 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5805058019428036413, guid: d530b7797ec3bce4e8905e0071089b2f, type: 3}
+  m_CorrespondingSourceObject: {fileID: 976724439988031010, guid: d530b7797ec3bce4e8905e0071089b2f, type: 3}
   m_PrefabInstance: {fileID: 5392709410539278790}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: 123d642682fcce942b7541723c53a7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &904109308
@@ -584,17 +584,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 989262191}
   m_CullTransparentMesh: 1
---- !u!114 &1179803249 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8758051607243332691, guid: d530b7797ec3bce4e8905e0071089b2f, type: 3}
-  m_PrefabInstance: {fileID: 5392709410539278790}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1614090287
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,14 +960,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8432399209176696214, guid: d530b7797ec3bce4e8905e0071089b2f, type: 3}
-      propertyPath: _lastText
+    - target: {fileID: 8205537560129736182, guid: d530b7797ec3bce4e8905e0071089b2f, type: 3}
+      propertyPath: _drawer
       value: 
-      objectReference: {fileID: 809728591}
-    - target: {fileID: 8432399209176696214, guid: d530b7797ec3bce4e8905e0071089b2f, type: 3}
-      propertyPath: _lastScoreText
-      value: 
-      objectReference: {fileID: 1179803249}
+      objectReference: {fileID: 735457771}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
