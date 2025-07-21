@@ -14,7 +14,7 @@ namespace ChristianGamers
         public float Strangth => _strangth;
         public int MaxItemCount => _maxItemCount;
         public float ThrowPower => _throwPower;
-        public WeightDebuffData[] WeightDebuff => _weightDebuff;
+        public WeightDebuffData[] WeightDebuffDatas => _weightDebuffDatas;
 
         [Header("移動系設定")]
         [SerializeField, Tooltip("移動速度")]
@@ -38,11 +38,12 @@ namespace ChristianGamers
         [SerializeField, Tooltip("投げる力の大きさ")]
         private float _throwPower = 10.0f;
         [SerializeField, Tooltip("重量デバフ")]
-        private WeightDebuffData[] _weightDebuff;
+        private WeightDebuffData[] _weightDebuffDatas;
 
         private void OnValidate()
         {
-            Array.Sort(_weightDebuff, (a, b) => a.WeightThreshold.CompareTo(b.WeightThreshold));
+            //閾値の量に応じてソートする
+            Array.Sort(_weightDebuffDatas, (a, b) => -a.WeightThreshold.CompareTo(b.WeightThreshold));
         }
 
         [Serializable]
@@ -51,7 +52,7 @@ namespace ChristianGamers
             public float WeightThreshold => _weightThreshold;
             public float DebuffScale => _debuffScale;
 
-            [SerializeField]
+            [SerializeField, Range(0, 1)]
             private float _weightThreshold;
             [SerializeField]
             private float _debuffScale;
