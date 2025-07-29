@@ -31,7 +31,7 @@ namespace ChristianGamers.System.Score
         /// </summary>
         public void SaveScores()
         {
-            ScoreData.AddScore(_score);
+            SaveDataSystem<ScoreData>.Data.AddScore(_score);
         }
 
         private int _score = 0;

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace ChristianGamers.Ingame.Sequence
 {
@@ -50,6 +51,7 @@ namespace ChristianGamers.Ingame.Sequence
 
         private void TimeUp()
         {
+            OnTimeUpdate?.Invoke(0);
             OnTimeUp?.Invoke();
         }
     }

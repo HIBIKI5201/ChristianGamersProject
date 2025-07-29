@@ -16,6 +16,8 @@ namespace ChristianGamers.Ingame.Sequence
 
         [SerializeField]
         private PlayableDirector _startTimeLineDirector;
+        [SerializeField]
+        private PlayableDirector _finishTimeLineDirector;
 
         [SerializeField]
         private AudioClip[] _bgms;
@@ -32,6 +34,7 @@ namespace ChristianGamers.Ingame.Sequence
 
             //一連のシークエンスのイベントを登録
             _startTimeLineDirector.stopped += d => HandleStart();
+            _finishTimeLineDirector.stopped += d => Finish();
             timer.OnTimeUp += HandleTimeUp;
 
             try
@@ -57,6 +60,11 @@ namespace ChristianGamers.Ingame.Sequence
                 _bgmCancellationTokenSource.Cancel();
                 scoreManager.SaveScores();
 
+                _finishTimeLineDirector.Play();
+            }
+
+            void Finish()
+            {
                 //スコア
                 if (TryGetComponent(out SceneLoad sceneLoad))
                 {
