@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Master/Ingame.unity
     guid: 51f50595f4382284e9a57ab8564973b0
   - enabled: 1
+    path: Assets/Scenes/Master/Explanation.unity
+    guid: ea7ce41946a254b4c9ae48eec75e9044
+  - enabled: 1
     path: Assets/Scenes/Master/Result/Result_Success.unity
     guid: 0417cd686e1166540841cc59f0f8bd79
   - enabled: 1
