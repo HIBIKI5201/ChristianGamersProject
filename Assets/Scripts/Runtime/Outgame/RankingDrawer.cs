@@ -4,6 +4,7 @@ using ChristianGamers.System.Score;
 using UnityEngine.UI;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ChristianGamers
 {
@@ -15,7 +16,7 @@ namespace ChristianGamers
 
         void Start()
         {
-            var scores = ScoreData.Score;
+            var scores = SaveDataSystem<ScoreData>.Data.Score;
             _texts = new Text[ScoreData.MAX_SCORES];
 
             for (int i = 0; i < _texts.Length; i++)
@@ -27,16 +28,15 @@ namespace ChristianGamers
 
         public void RankingView()
         {
-            var scores = ScoreData.Score;
-            ;
-
+            var scores = SaveDataSystem<ScoreData>.Data.Score;
+            
             for (int i = 0; i < _texts.Length; i++)
             {
                 _texts[i].text = $"{i + 1}位 : {(i < scores.Count ? scores[i] : 0)} 点";
             }
 
             //自分のスコアを表示する処理
-            int myScore = ScoreData.LastScore;
+            int myScore = SaveDataSystem<ScoreData>.Data.LastScore;
             myScore.ToString();
 
             if (_lastScoreText != null)
